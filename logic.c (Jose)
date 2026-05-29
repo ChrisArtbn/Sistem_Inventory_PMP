@@ -1,1 +1,124 @@
+#include <string.h>
+#include <stdio.h>
+
+typedef struct Barang
+{
+    int id;
+    char nama[50];
+    Barang* next;
+}Barang;
+
+void cekMemori(int* memo){
+
+}
+
+void tambahBarang(Barang** head){
+    int sisaMem;
+    cekMemori(&sisaMem);
+
+    if(sisaMem < 50){
+        printf("Memori segera penuh\n");
+        return;
+    }
+
+    char tempid[50];
+    printf("Masukkan id: ");
+    scanf("%s", tempid);
+
+    Barang* tempbarang = NULL;
+    cari(*head, tempid, &tempbarang);
+    if(tempbarang != NULL){
+        printf("Barang duplikat");
+        return;
+    }
+
+    printf("Masukkan nama barang");
+    //generate id
+    //set kategori
+    printf("Barang berhasil dimasukkan");
+}
+
+void hapusBarang(Barang** head){
+    if(*head == NULL){
+        printf("Inventory Kosong");
+    }
+    
+    char tempid[50];
+    printf("Masukkan barang yang dihapus: ");
+    scanf("%s", tempid);
+
+    //delete node linkedlist
+
+    if(/*barang tak ditemukan*/){
+        printf("barang tidak ditemukan");
+    }
+    else{
+        printf("Barang berhasil dihapus");
+    }
+}
+
+void cariBarang(Barang** head){
+    char tempid[50];
+    printf("Masukkan id: ");
+    scanf("%s", tempid);
+
+    //fungsi searchnode berdasarkan id
+    if(/*hasil search ada*/){
+        printf("Barang ditemukan blablabla");
+    }
+    else{
+        printf("Barang tidak ditemukan");
+    }
+}
+
+void updateStok(Barang** head){
+    int tempid[50];
+    printf("Masukkan id barang");
+    scanf("%s", tempid);
+
+    //fungsi searchnode berdasarkan id
+
+    if(/*hasil search ada*/){
+        
+        printf("Ingin menambah atau mengurangi?");
+        scanf("%s");
+        if(/*menambah*/){
+            //add node linked list
+        }
+        else(/*membuag*/){
+            printf("Berapa yang ingin dikurangi");
+            if(/*yang dikurangi melebihi stok saat ini*/){
+                printf("Jumlah melebihi batas stok");
+            }
+            else{
+                //delete linked list
+                //kalau linkedlist jadi kosong panggil updatestatus ubah jadi kosng
+            }
+        }
+    }
+}
+
+void updateStatus(){
+    int tempid[50];
+    printf("Masukkan id barang");
+    scanf("%s", tempid);
+
+    //fungsi searchnode berdasarkan id
+
+    if(/*ada*/){
+        printf("Pilih status (tersedia, dipinjam, rusak, kosong)");
+        //berdasarkan status update inventarisnya
+    }
+}
+
+void tampilkanData(){
+    if(*head == NULL){
+        printf("Inventory Kosong");
+    }
+    //panggil fungsi tampilnode dari linkedlist
+}
+
+void ringkasan(){
+    //cek tiap data, periksa jumlah tiap status
+}
 
