@@ -1,1 +1,91 @@
+#include <stdio.h>
+#include <string.h>
+#include "Inventory.h"
+
+void cetakMenuUtama(){
+    printf("SISTEM INVENTARIS DENGAN ARDUINO UNO R3\n");
+    printf("Berikut pilihan yang tersedia: \n");
+    printf("1. Tambah Data Barang\n");
+    printf("2. Hapus Data Barang\n");
+    printf("3. Cari Data Barang berdasarkan ID\n");
+    printf("4. Perbarui Stok Barang\n");
+    printf("5. Perbarui Status Barang\n");
+    printf("6. Tampilkan Seluruh Data Inventaris\n");
+    printf("7. Tampilkan Ringkasan Inventaris\n");
+    printf("Silakan masukkan pilihan Anda (dengan Angka, 0 untuk keluar): ");
+}
+
+void bacapilmenu(int *pilihan){
+    scanf("%d", pilihan);
+}
+
+void bacainputdata(char *id, char *nama, char *kategori, int *stok, char *lokasi, char *status, char *pemilik, char *pic){
+    printf("Masukkan ID: ");
+    scanf("%s", id);
+    
+    printf("Masukkan Nama Barang: ");
+    scanf("%s", nama);
+    
+    printf("Masukkan Kategori Barang: ");
+    scanf("%s", kategori);
+    
+    printf("Masukkan Jumlah Stok Awal: ");
+    scanf("%d", stok);
+    
+    printf("Masukkan Status Barang (T/D/R/H): ");
+    scanf("%c", status);
+    
+    printf("Masukkan Pemilik Barang: ");
+    scanf("%s", pemilik);
+    
+    printf("Masukkan PIC: ");
+    scanf("%s", pic);
+}
+
+void bacainputID(char *id) {
+    printf("Masukkan ID: ");
+    scanf("%s", id);
+}
+
+void bacainputstoknew(int *stokBaru) {
+    printf("Masukkan Jumlah Stok Terbaru: ");
+    scanf("%d", stokBaru);
+}
+
+void bacainputstatusnew(char *statusBaru) {
+    printf("Masukkan Status (T/D/R/H): ");
+    scanf("%s", statusBaru);
+}
+
+void tampilkanDetailBarang(Node* current){
+    if(current == NULL){
+        printf("Data masih kosong\n");
+        return;
+    }
+
+    printf("ID Barang: %s\n", current->data.id);
+    printf("Nama Komponen: %s\n", current->data.nama);
+    printf("Kategori: %s\n", current->data.kategori);
+    printf("Lokasi Fisik: %s\n", current->data.lokasi);
+    printf("Jumlah Stok: %d unit\n", current->data.stok);
+    printf("Pemilik: %s\n", current->data.pemilik);
+    printf("PIC: %s\n", current->data.pic);
+
+    if(current->data.status == 'T'){
+        printf("Tersedia\n"); 
+    }
+    else if (current->data.status == 'D'){
+        printf("Dipinjam\n"); 
+    }
+    else if (current->data.status = 'R'){
+        printf("Rusak\n"); 
+    }
+    else if(current->data.status = 'H'){
+        printf("Habis\n"); 
+    }
+    else{
+        printf("Kondisi tidak diketahui (%c)\n", current->data.status); 
+    }
+    
+}
 
