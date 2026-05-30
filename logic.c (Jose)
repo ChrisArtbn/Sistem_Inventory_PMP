@@ -1,18 +1,12 @@
 #include <string.h>
 #include <stdio.h>
+#include <inventory.h>
 
-typedef struct Barang
-{
-    int id;
-    char nama[50];
-    Barang* next;
-}Barang;
 
-void cekMemori(int* memo){
+void cekMemori(int* memo);//buat cek siapa tau udah penuh
 
-}
 
-void tambahBarang(Barang** head){
+void tambahBarang(Node** head){
     int sisaMem;
     cekMemori(&sisaMem);
 
@@ -21,79 +15,106 @@ void tambahBarang(Barang** head){
         return;
     }
 
-    char tempid[50];
-    printf("Masukkan id: ");
-    scanf("%s", tempid);
+    InventoryItem data;
 
-    Barang* tempbarang = NULL;
-    cari(*head, tempid, &tempbarang);
+    printf("Masukkan id: ");
+    scanf("%s", data.id);
+
+    Node* tempbarang = NULL;
+    searchNode(*head, data.id, &tempbarang);//dari fungsi linklist
     if(tempbarang != NULL){
         printf("Barang duplikat");
         return;
     }
 
-    printf("Masukkan nama barang");
-    //generate id
-    //set kategori
-    printf("Barang berhasil dimasukkan");
+    printf("Masukkan nama barang: ");
+    scanf("%s", data.nama);
+
+    data.stok = 1;
+    data.status = 'T';
+
+    addNode(head, data);//dari fungsi linklist
+
+    printf("Barang berhasil dimasukkan\n");
 }
 
-void hapusBarang(Barang** head){
+void hapusBarang(Node** head){
     if(*head == NULL){
-        printf("Inventory Kosong");
+        printf("Inventory Kosong\n");
     }
     
     char tempid[50];
-    printf("Masukkan barang yang dihapus: ");
+    printf("Masukkan ID barang yang mau dihapus: ");
     scanf("%s", tempid);
 
-    //delete node linkedlist
+    char status;
+    deletenode(head, tempid, &status);//fungsi linkedlist
 
-    if(/*barang tak ditemukan*/){
-        printf("barang tidak ditemukan");
+    if(status == 'G'){
+        printf("barang tidak ditemukan\n");
     }
     else{
-        printf("Barang berhasil dihapus");
+        printf("Barang berhasil dihapus\n");
     }
 }
 
-void cariBarang(Barang** head){
+void cariBarang(Node* head){
     char tempid[50];
     printf("Masukkan id: ");
     scanf("%s", tempid);
 
-    //fungsi searchnode berdasarkan id
-    if(/*hasil search ada*/){
-        printf("Barang ditemukan blablabla");
+    Node* tempor = NULL;
+    searchNode(head, tempid, &tempor);//dari fungsi linklist
+
+    if(tempor != NULL){
+        printf("Barang ditemukan\n");
     }
     else{
-        printf("Barang tidak ditemukan");
+        printf("Barang tidak ditemukan\n");
     }
 }
 
-void updateStok(Barang** head){
-    int tempid[50];
+void updateStok(Node* head){
+    char tempid[50];
     printf("Masukkan id barang");
     scanf("%s", tempid);
 
-    //fungsi searchnode berdasarkan id
+    Node* tempor = NULL;
+    searchNode(head, tempid, tempor);//dari fungsi linkedlist
 
-    if(/*hasil search ada*/){
+    if(tempor != NULL){
+        printf("Status sekarang : %d\n", tempor->data.stok);
         
-        printf("Ingin menambah atau mengurangi?");
-        scanf("%s");
-        if(/*menambah*/){
-            //add node linked list
+        printf("Mau berubah berapa banyak? ");
+        int tempangka;
+        scanf("%d", tempangka);
+
+        printf("Ketik 1 jika ingin menambah dan 2 jika ingin mengurangi.\n");
+        int pilihan;
+        scanf("%d", pilihan);
+
+        if(pilihan == 1){
+            tempor->data.stok += tempangka;
+            printf("Stok telah ditambahkan\n");
+            if(tempor->data.stok > 0 && tempor->data.status == 'H'){
+                tempor->data.status = 'T';
+            }
         }
-        else(/*membuag*/){
-            printf("Berapa yang ingin dikurangi");
-            if(/*yang dikurangi melebihi stok saat ini*/){
-                printf("Jumlah melebihi batas stok");
+        else if(pilihan == 2){
+            if(tempangka > tempor->data.stok){
+                printf("Jumlah melebihi stok saat ini\n");
             }
             else{
-                //delete linked list
-                //kalau linkedlist jadi kosong panggil updatestatus ubah jadi kosng
+                tempor->data.stok -= tempangka;
+                printf("Stok berhasil dikurangi\n");
+
+                if(tempor->data.stok == 0){
+                    tempor->data.status = 'H';
+                }
             }
+        }
+        else{
+            printf("ID tidak ada dalam inventory\n");
         }
     }
 }
@@ -111,14 +132,59 @@ void updateStatus(){
     }
 }
 
-void tampilkanData(){
-    if(*head == NULL){
-        printf("Inventory Kosong");
+void tampilkanData(Node* head){
+    if(head == NULL){
+        printf("Inventory Kosong");\
+        return;
     }
-    //panggil fungsi tampilnode dari linkedlist
+
+    Node* current = head;
+    int i = 1;
+
+    while(current != NULL){
+        printf("Item ke-%d ", i);
+        tampilkanDetailBarang(current);//fungsi dari file lain
+        current = current->next;
+        i++;
+    }
 }
 
-void ringkasan(){
-    //cek tiap data, periksa jumlah tiap status
-}
+void ringkasan(Node* head){
+    if(head == NULL){
+        printf("Data kosong\n");
+        return;
+    }
 
+    int countkategori = 0;
+    int countstattersedia = 0;
+    int countstatdipinjam = 0;
+    int countstathabis = 0;
+    int countstatrusak = 0;
+
+    Node* current = head;
+
+    while(current != NULL){
+        countkategori++;
+
+        if(current->data.status == 'T'){
+            countstattersedia++;
+        }
+        else if(current->data.status == 'H'){
+            countstathabis++;
+        }
+        else if(current->data.status == 'D'){
+            countstatdipinjam++;
+        }
+        else if(current->data.status == 'R'){
+            countstatrusak++;
+        }
+        current = current->next;
+    }
+
+    printf("Ringkasan Inventaris: \n");
+    printf("Total Kategori: %d\n", countkategori);
+    printf("Jumlah Tersedia: %d\n", countstattersedia);
+    printf("Jumlah Dipinjam: %d\n", countstatdipinjam);
+    printf("Jumlah Rusak: %d\n", countstatrusak);
+    printf("Jumlah Habis: %d\n", countstathabis);
+}
