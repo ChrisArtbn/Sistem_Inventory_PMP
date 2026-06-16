@@ -1,4 +1,4 @@
-#include "inventory.h"
+#include "inventory_final.h"
 
 int main(void)
 {

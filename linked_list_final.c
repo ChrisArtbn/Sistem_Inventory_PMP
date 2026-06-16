@@ -1,4 +1,4 @@
-#include "inventory.h"
+#include "inventory_final.h"
 
 static Node nodePool[MAX_ITEMS];
 static int nodeDipakai[MAX_ITEMS];
