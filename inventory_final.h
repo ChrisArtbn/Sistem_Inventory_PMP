@@ -7,15 +7,15 @@
 #include <ctype.h>
 
 #define MAX_ITEMS 20
-#define MEMORY_WARNING_SLOT 3
+#define MEMORY_WARNING_SLOT 2
 
-#define ID_LEN 50
-#define NAMA_LEN 100
-#define KATEGORI_LEN 50
-#define LOKASI_LEN 100
-#define PEMILIK_LEN 100
-#define PIC_LEN 100
-#define LINE_LEN 512
+#define ID_LEN 10
+#define NAMA_LEN 20
+#define KATEGORI_LEN 15
+#define LOKASI_LEN 15
+#define PEMILIK_LEN 15
+#define PIC_LEN 15
+#define LINE_LEN 64
 
 typedef struct {
     char id[ID_LEN];
