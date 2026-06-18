@@ -37,7 +37,7 @@ typedef enum {
 // byte "padding" kosong di antara variabel.
 typedef struct __attribute__((packed)) {
     uint16_t id_barang;      // 2 byte (Menyimpan angka 0 - 65535, ganti char array jadi ID numerik)
-    char nama[12];           // 12 byte (Maksimal 11 karakter + null terminator)
+    char nama[11];           // 12 byte (Maksimal 11 karakter + null terminator)
     uint8_t id_kategori;     // 1 byte (Disambungkan dengan enum Kategori)
     uint8_t jumlah_stok;     // 1 byte (Menyimpan angka 0 - 255)
     uint8_t id_lokasi;       // 1 byte (Disambungkan dengan enum Lokasi)
