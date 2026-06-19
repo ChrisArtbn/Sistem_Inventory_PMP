@@ -328,7 +328,7 @@ void mulai_program(void)
     head = NULL;
     pilihan = -1;
 
-    init_Linked_List();
+    init_linked_list();
 
     while (pilihan != 0){
         cetak_menu_utama();
