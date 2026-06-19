@@ -1,6 +1,6 @@
 #include "inventory_final.h"
 
-int main(void)
+int main()
 {
     mulai_program();
     return 0;
