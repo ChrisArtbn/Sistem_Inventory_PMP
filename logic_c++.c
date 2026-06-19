@@ -22,12 +22,12 @@ void tambahBarang(Block** head) {
     }
 
     if (data.jumlah_stok == 0 && data.status_barang != HABIS) {
-        printf_P(PSTR("Stok 0, status otomatis diubah menjadi Habis\n"));
+        printf_P(PSTR("Stok 0, Status diubah menjadi Habis\n"));
         data.status_barang = HABIS;
     }
 
     if (data.jumlah_stok > 0 && data.status_barang == HABIS) {
-        printf_P(PSTR("Stok lebih dari 0, status otomatis diubah menjadi Tersedia\n"));
+        printf_P(PSTR("Stok lebih dari 0, Status diubah menjadi Tersedia\n"));
         data.status_barang = TERSEDIA;
     }
 
@@ -36,7 +36,7 @@ void tambahBarang(Block** head) {
 
     cekMemori(&sisaSlot);
     if (sisaSlot <= MEMORY_WARNING_SLOT && sisaSlot > 0) {
-        printf_P(PSTR("Peringatan: memori hampir penuh, sisa slot %d\n"), sisaSlot);
+        printf_P(PSTR("Memori hampir penuh, sisa slot %d\n"), sisaSlot);
     }
 }
 
@@ -106,7 +106,7 @@ void updateStok(Block* head) {
     }
 
     printf_P(PSTR("Stok sekarang: %u\n"), tempor->active.payload.jumlah_stok);
-    printf_P(PSTR("Mau berubah berapa banyak? "));
+    printf_P(PSTR("Masukkan jumlah perubahan stok(Maks stok 255):  "));
     scanf("%d", &tempangka);
 
     if (tempangka < 0) {
@@ -169,7 +169,7 @@ void updateStatus(Block* head) {
     else if (tempor->active.payload.status_barang == RUSAK) printf_P(PSTR("Rusak\n"));
     else printf_P(PSTR("Habis\n"));
 
-    printf_P(PSTR("Pilih status (T=tersedia, D=dipinjam, R=rusak, H=habis): "));
+    printf_P(PSTR("Pilih status (T=Tersedia, D=Dipinjam, R=Rusak, H=Habis): "));
     scanf(" %c", &newstats);
     
     if (newstats == 'T' || newstats == 't') { tempor->active.payload.status_barang = TERSEDIA; valid = 1; }
@@ -215,7 +215,7 @@ void ringkasan(Block* head) {
     Block* current;
 
     if (head == NULL) {
-        printf_P(PSTR("Data kosong\n"));
+        printf_P(PSTR("Data masih kosong\n"));
         return;
     }
 
@@ -246,19 +246,19 @@ void ringkasan(Block* head) {
     printf_P(PSTR("Sisa Slot Memori  : %d item\n"), sisaSlot);
 
     if (sisaSlot <= MEMORY_WARNING_SLOT && sisaSlot > 0) {
-        printf_P(PSTR("Peringatan: memori hampir penuh\n"));
+        printf_P(PSTR("Memori hampir penuh\n"));
     }
 }
 
-// 
+
 void mulaiProgram(void) {
     Block* head = NULL; 
     int pilihan = -1;
 
     initLinkedList(); 
 
-    // === TAMBAHKAN BLOK KODE STRESS-TEST INI ===
-    printf_P(PSTR("\n[SISTEM] Memulai Auto-Fill 50 Data Dummy...\n"));
+
+    printf_P(PSTR("\nAuto-Fill 50 Data Dummy\n"));
     for(int i = 1; i <= 50; i++) {
         InventarisLab dummy;
         dummy.id_barang = i;
@@ -272,7 +272,7 @@ void mulaiProgram(void) {
 
         addNode(&head, dummy);
     }
-    printf_P(PSTR("[SISTEM] 50 Data berhasil dimuat!\n"));
+    printf_P(PSTR("50 Data berhasil dimuat\n"));
 
     while (pilihan != 0) {
         cetakMenuUtama();
