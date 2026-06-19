@@ -1,4 +1,4 @@
-#include "inventory_final.h"
+#include "sistem_inventory.h"
 
 int main()
 {
