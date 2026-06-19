@@ -64,8 +64,8 @@ void hapus_barang(Memory_Pool_Inventaris *mp);
 void cari_barang_berdasarkan_ID(Memory_Pool_Inventaris *mp);
 void update_stock(Memory_Pool_Inventaris *mp);
 void update_status(Memory_Pool_Inventaris *mp);
-void tampilkan_Semua_Data(MemoryPoolInventaris *mp);
-void tampilkanRingkasan(MemoryPoolInventaris *mp);
+void tampilkan_semua_data(MemoryPoolInventaris *mp);
+void tampilkan_ringkasan(MemoryPoolInventaris *mp);
 
 // Fungsi Utilitas Input
 void bacaPilihanMenu(int *pilihan);
