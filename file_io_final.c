@@ -156,9 +156,9 @@ void muat_file(Node** head, const char* nama_file)
         if (field != 8){
             printf("Format baris tidak valid, data dilewati\n");
         } else{
-            normalisasiStatus(&data.status);
-            validasiStatus(data.status, &valid);
-            searchNode(*head, data.id, &hasil);
+            normalisasi_status(&data.status);
+            validasi_status(data.status, &valid);
+            search_node(*head, data.id, &hasil);
 
             if (hasil != NULL){
                 printf("ID %s duplikat, data dari file akan dilewati\n", data.id);
@@ -170,7 +170,7 @@ void muat_file(Node** head, const char* nama_file)
                 if (data.stok == 0) {
                     data.status = 'H';
                 }
-                addNode(head, data);
+                add_node(head, data);
             }
         }
     }
@@ -178,7 +178,7 @@ void muat_file(Node** head, const char* nama_file)
     printf("Proses memuat data dari %s selesai\n", nama_file);
 }
 
-void simpanKeFile(Node* head, const char* nama_file)
+void simpan_ke_file(Node* head, const char* nama_file)
 {
     FILE* file;
     Node* current;
