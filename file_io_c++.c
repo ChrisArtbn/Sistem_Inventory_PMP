@@ -36,7 +36,7 @@ static void clearInputBuffer(void) {
 }
 
 void cetakMenuUtama(void) {
-    printf_P(PSTR("\n=== SISTEM INVENTARIS LAB (MEMORY POOL) ===\n"));
+    printf_P(PSTR("\nSISTEM INVENTARIS LABORATORIUM KELOMPOK 10\n"));
     printf_P(PSTR("1. Tambah Data Barang\n"));
     printf_P(PSTR("2. Hapus Data Barang\n"));
     printf_P(PSTR("3. Cari Data Barang berdasarkan ID\n"));
@@ -120,7 +120,6 @@ void tampilkanDetailBarang(Block* current) {
     printf_P(PSTR("Jumlah Stok   : %u unit\n"), item->jumlah_stok);
     printf_P(PSTR("Pemilik       : %s\n"), item->pemilik);
     printf_P(PSTR("PIC           : %s\n"), item->pic);
-
     printf_P(PSTR("Status        : "));
     switch (item->status_barang) {
         case TERSEDIA: printf_P(PSTR("Tersedia\n")); break;
@@ -129,6 +128,5 @@ void tampilkanDetailBarang(Block* current) {
         case HABIS: printf_P(PSTR("Habis\n")); break;
         default: printf_P(PSTR("Kondisi tidak diketahui\n"));
     }
-    printf_P(PSTR("----------------------------------------\n"));
 }
 
