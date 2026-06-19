@@ -1,18 +1,18 @@
-#include "inventory_final.h"
+#include "sistem_inventory.h"
 
-static void clearInputBuffer(void)
+static void clear_buffer()
 {
     int c;
     c = getchar();
-    while (c != '\n' && c != EOF) {
+    while (c != '\n' && c != EOF){
         c = getchar();
     }
 }
 
-void cetakMenuUtama(void)
+void menu_utama()
 {
-    printf("SISTEM INVENTARIS DENGAN ARDUINO UNO\n");
-    printf("Berikut pilihan yang tersedia:\n");
+    printf("SISTEM INVENTARISASI BARANG LABORATORIUM\n");
+    printf("Pilihan yang tersedia:\n");
     printf("1. Tambah Data Barang\n");
     printf("2. Hapus Data Barang\n");
     printf("3. Cari Data Barang berdasarkan ID\n");
@@ -20,67 +20,65 @@ void cetakMenuUtama(void)
     printf("5. Perbarui Status Barang\n");
     printf("6. Tampilkan Seluruh Data Inventaris\n");
     printf("7. Tampilkan Ringkasan Inventaris\n");
-    printf("8. Muat data dari input.txt\n");
-    printf("9. Simpan data ke output.txt\n");
     printf("Silakan masukkan pilihan Anda (0 untuk keluar): ");
 }
 
-void bacapilmenu(int *pilihan)
+void baca_pilihan_menu(int *pilihan)
 {
-    if (scanf("%d", pilihan) != 1) {
+    if (scanf("%d", pilihan) != 1){
         *pilihan = -1;
-        clearInputBuffer();
+        clear_buffer();
     }
 }
 
-void bacainputdata(char *id, char *nama, char *kategori, int *stok, char *lokasi, char *status, char *pemilik, char *pic)
+void baca_input_data(char *id, char *nama, char *kategori, int *stok, char *lokasi, char *status, char *pemilik, char *pic)
 {
-    printf("Masukkan ID: ");
+    printf("Masukkan ID : ");
     scanf(" %49s", id);
 
-    printf("Masukkan Nama Barang: ");
+    printf("Masukkan Nama Barang : ");
     scanf(" %99[^\n]", nama);
 
-    printf("Masukkan Kategori Barang: ");
+    printf("Masukkan Kategori Barang : ");
     scanf(" %49[^\n]", kategori);
 
-    printf("Masukkan Jumlah Stok Awal: ");
+    printf("Masukkan Jumlah Stok Awal : ");
     scanf("%d", stok);
 
-    printf("Masukkan Lokasi Fisik: ");
+    printf("Masukkan Lokasi Fisik : ");
     scanf(" %99[^\n]", lokasi);
 
-    printf("Masukkan Status Barang (T/D/R/H): ");
+    printf("Masukkan Status Barang (T/D/R/H) : ");
     scanf(" %c", status);
 
-    printf("Masukkan Pemilik Barang: ");
+    printf("Masukkan Pemilik Barang : ");
     scanf(" %99[^\n]", pemilik);
 
-    printf("Masukkan PIC: ");
+    printf("Masukkan PIC : ");
     scanf(" %99[^\n]", pic);
 }
 
-void bacainputID(char *id)
+void baca_input_ID(char *id)
 {
-    printf("Masukkan ID: ");
+    printf("Masukkan ID : ");
     scanf(" %49s", id);
 }
 
-void bacainputstoknew(int *stokBaru)
+void baca_input_stok_baru(int *stokBaru)
 {
-    printf("Masukkan Jumlah Stok: ");
+    printf("Masukkan Jumlah Stok : ");
     scanf("%d", stokBaru);
 }
 
-void bacainputstatusnew(char *statusBaru)
+void baca_input_status_baru(char *statusBaru)
 {
-    printf("Masukkan Status (T/D/R/H): ");
+    printf("Masukkan Status (T/D/R/H) : ");
     scanf(" %c", statusBaru);
 }
 
-void tampilkanDetailBarang(Node* current)
+void tampilkan_detail_barang(Node* current)
 {
-    if (current == NULL) {
+    if (current == NULL){
         printf("Data masih kosong\n");
         return;
     }
@@ -92,7 +90,7 @@ void tampilkanDetailBarang(Node* current)
     printf("Pemilik       : %s\n", current->data.pemilik);
     printf("PIC           : %s\n", current->data.pic);
 
-    if (current->data.status == 'T') {
+    if (current->data.status == 'T'){
         printf("Status        : Tersedia\n");
     } else if (current->data.status == 'D') {
         printf("Status        : Dipinjam\n");
@@ -103,11 +101,10 @@ void tampilkanDetailBarang(Node* current)
     } else {
         printf("Status        : Kondisi tidak diketahui (%c)\n", current->data.status);
     }
-
     printf("----------------------------------------\n");
 }
 
-void muatDariFile(Node** head, const char* nama_file)
+void muat_file(Node** head, const char* nama_file)
 {
     FILE* file;
     char line[LINE_LEN];
@@ -119,22 +116,21 @@ void muatDariFile(Node** head, const char* nama_file)
 
     file = fopen(nama_file, "r");
 
-    if (file == NULL) {
+    if (file == NULL){
         printf("File %s tidak ditemukan\n", nama_file);
         return;
     }
 
-    while (fgets(line, LINE_LEN, file) != NULL) {
+    while (fgets(line, LINE_LEN, file) != NULL){
         if (line[0] == '#' || line[0] == '\n' || line[0] == '\0') {
             continue;
         }
-
         memset(&data, 0, sizeof(InventoryItem));
 
         field = 0;
         token = strtok(line, "|\n");
 
-        while (token != NULL) {
+        while (token != NULL){
             if (field == 0) {
                 strncpy(data.id, token, ID_LEN - 1);
             } else if (field == 1) {
@@ -157,31 +153,29 @@ void muatDariFile(Node** head, const char* nama_file)
             token = strtok(NULL, "|\n");
         }
 
-        if (field != 8) {
+        if (field != 8){
             printf("Format baris tidak valid, data dilewati\n");
-        } else {
+        } else{
             normalisasiStatus(&data.status);
             validasiStatus(data.status, &valid);
             searchNode(*head, data.id, &hasil);
 
-            if (hasil != NULL) {
-                printf("ID %s duplikat, data dari file dilewati\n", data.id);
+            if (hasil != NULL){
+                printf("ID %s duplikat, data dari file akan dilewati\n", data.id);
             } else if (valid == 0) {
-                printf("Status ID %s tidak valid, data dilewati\n", data.id);
+                printf("Status ID %s tidak valid, data akan dilewati\n", data.id);
             } else if (data.stok < 0) {
-                printf("Stok ID %s tidak valid, data dilewati\n", data.id);
+                printf("Stok ID %s tidak valid, data akan dilewati\n", data.id);
             } else {
                 if (data.stok == 0) {
                     data.status = 'H';
                 }
-
                 addNode(head, data);
             }
         }
     }
-
     fclose(file);
-    printf("Proses muat data dari %s selesai\n", nama_file);
+    printf("Proses memuat data dari %s selesai\n", nama_file);
 }
 
 void simpanKeFile(Node* head, const char* nama_file)
@@ -191,7 +185,7 @@ void simpanKeFile(Node* head, const char* nama_file)
 
     file = fopen(nama_file, "w");
 
-    if (file == NULL) {
+    if (file == NULL){
         printf("File %s gagal dibuat\n", nama_file);
         return;
     }
@@ -200,7 +194,7 @@ void simpanKeFile(Node* head, const char* nama_file)
 
     current = head;
 
-    while (current != NULL) {
+    while (current != NULL){
         fprintf(file, "%s|%s|%s|%d|%s|%c|%s|%s\n",
                 current->data.id,
                 current->data.nama,
@@ -210,10 +204,8 @@ void simpanKeFile(Node* head, const char* nama_file)
                 current->data.status,
                 current->data.pemilik,
                 current->data.pic);
-
         current = current->next;
     }
-
     fclose(file);
     printf("Data berhasil disimpan ke %s\n", nama_file);
 }
