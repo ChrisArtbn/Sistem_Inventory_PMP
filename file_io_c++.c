@@ -132,12 +132,3 @@ void tampilkanDetailBarang(Block* current) {
     printf_P(PSTR("----------------------------------------\n"));
 }
 
-void muatDariFile(Block** head, const char* nama_file) {
-    printf_P(PSTR("\n[ERROR] Maaf, Arduino Uno tidak memiliki memori file bawaan.\n"));
-    printf_P(PSTR("Fitur muat data dari '%s' ini membutuhkan Modul SD Card.\n"), nama_file);
-}
-
-void simpanKeFile(Block* head, const char* nama_file) {
-    printf_P(PSTR("\n[ERROR] Maaf, Arduino Uno tidak memiliki memori file bawaan.\n"));
-    printf_P(PSTR("Fitur simpan data ke '%s' ini membutuhkan Modul SD Card.\n"), nama_file);
-}
