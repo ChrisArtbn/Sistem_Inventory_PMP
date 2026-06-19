@@ -30,7 +30,9 @@ static const char* lokasiKeString(uint8_t l) {
 
 static void clearInputBuffer(void) {
     int c;
-    while ((c = getchar()) != '\n' && c != '\r' && c != EOF);
+    while (c != '\n' && c != '\r' && c != EOF){
+        c = getchar();
+    }
 }
 
 void cetakMenuUtama(void) {
@@ -62,19 +64,23 @@ void bacainputdata(InventarisLab *data) {
 
     printf_P(PSTR("Masukkan Nama Barang (Maks 11 huruf): "));
     scanf(" %11[^\n]", data->nama);
+    clearInputBuffer();
 
     printf_P(PSTR("Masukkan Kategori (Sensor/Board/Motor/Kabel): "));
     scanf(" %14s", temp_kategori);
     data->id_kategori = stringKeKategori(temp_kategori);
+    clearInputBuffer();
 
     printf_P(PSTR("Masukkan Jumlah Stok Awal (0-255): "));
     int stok;
     scanf("%d", &stok);
     data->jumlah_stok = (uint8_t)stok;
+    clearInputBuffer();
 
     printf_P(PSTR("Masukkan Lokasi Fisik (Lab 1/Lab 2/Lab 3/Lab 4): "));
     scanf(" %14[^\n]", temp_lokasi);
     data->id_lokasi = stringKeLokasi(temp_lokasi);
+    clearInputBuffer();
 
     printf_P(PSTR("Masukkan Status (T=Tersedia/D=Dipinjam/R=Rusak/H=Habis): "));
     scanf(" %c", &status_char);
@@ -82,17 +88,21 @@ void bacainputdata(InventarisLab *data) {
     else if (status_char == 'D' || status_char == 'd') data->status_barang = DIPINJAM;
     else if (status_char == 'R' || status_char == 'r') data->status_barang = RUSAK;
     else data->status_barang = HABIS;
+    clearInputBuffer();
 
     printf_P(PSTR("\nMasukkan Pemilik Barang (Inisial 3 huruf): "));
     scanf(" %3s", data->pemilik);
+    clearInputBuffer();
 
     printf_P(PSTR("\nMasukkan PIC (Inisial 3 huruf): "));
     scanf(" %3s", data->pic);
+    clearInputBuffer();
 }
 
 void bacainputID(uint16_t *id) {
     printf_P(PSTR("\nMasukkan ID Barang (Angka): "));
     scanf("%hu", id);
+    clearInputBuffer();
 }
 
 void tampilkanDetailBarang(Block* current) {
