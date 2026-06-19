@@ -1,93 +1,89 @@
 #include "sistem_inventory.h"
 
-static Node nodePool[MAX_ITEMS];
-static int nodeDipakai[MAX_ITEMS];
+static Node node_pool[MAX_ITEMS];
+static int node_dipakai[MAX_ITEMS];
 
-static void ambilNodeKosong(Node** nodeKosong)
+static void ambil_node_kosong(Node** nodeKosong)
 {
     int i;
 
     *nodeKosong = NULL;
 
-    for (i = 0; i < MAX_ITEMS; i++) {
-        if (nodeDipakai[i] == 0) {
-            nodeDipakai[i] = 1;
-            nodePool[i].next = NULL;
-            memset(&nodePool[i].data, 0, sizeof(InventoryItem));
-            *nodeKosong = &nodePool[i];
+    for (i = 0; i < MAX_ITEMS; i++){
+        if (node_dipakai[i] == 0) {
+            node_dipakai[i] = 1;
+            node_pool[i].next = NULL;
+            memset(&node_pool[i].data, 0, sizeof(InventoryItem));
+            *nodeKosong = &node_pool[i];
             return;
         }
     }
 }
 
-static void lepasNode(Node* node)
+static void lepas_node(Node* node)
 {
     int i;
 
-    for (i = 0; i < MAX_ITEMS; i++) {
-        if (&nodePool[i] == node) {
-            nodeDipakai[i] = 0;
-            nodePool[i].next = NULL;
-            memset(&nodePool[i].data, 0, sizeof(InventoryItem));
+    for (i = 0; i < MAX_ITEMS; i++){
+        if (&node_pool[i] == node){
+            node_dipakai[i] = 0;
+            node_pool[i].next = NULL;
+            memset(&node_pool[i].data, 0, sizeof(InventoryItem));
             return;
         }
     }
 }
 
-void initLinkedList(void)
+void init_linked_list(void)
 {
     int i;
 
-    for (i = 0; i < MAX_ITEMS; i++) {
-        nodeDipakai[i] = 0;
-        nodePool[i].next = NULL;
-        memset(&nodePool[i].data, 0, sizeof(InventoryItem));
+    for (i = 0; i < MAX_ITEMS; i++){
+        node_dipakai[i] = 0;
+        node_pool[i].next = NULL;
+        memset(&node_pool[i].data, 0, sizeof(InventoryItem));
     }
 }
 
-void cekMemori(int* sisaSlot)
+void cek_memori(int* sisa_slot)
 {
     int i;
+    *sisa_slot = 0;
 
-    *sisaSlot = 0;
-
-    for (i = 0; i < MAX_ITEMS; i++) {
-        if (nodeDipakai[i] == 0) {
-            (*sisaSlot)++;
+    for (i = 0; i < MAX_ITEMS; i++){
+        if (node_dipakai[i] == 0){
+            (*sisa_slot)++;
         }
     }
 }
 
-void addNode(Node** head, InventoryItem newItem)
+void add_node(Node** head, InventoryItem newItem)
 {
-    Node* newNode;
+    Node* new_node;
     Node* current;
 
-    ambilNodeKosong(&newNode);
+    ambil_node_kosong(&new_node);
 
-    if (newNode == NULL) {
+    if (new_node == NULL){
         printf("Memori penuh, node baru gagal dibuat\n");
         return;
     }
+    new_node->data = new_item;
+    new_node->next = NULL;
 
-    newNode->data = newItem;
-    newNode->next = NULL;
-
-    if (*head == NULL) {
-        *head = newNode;
+    if (*head == NULL){
+        *head = new_node;
         return;
     }
-
     current = *head;
 
-    while (current->next != NULL) {
+    while (current->next != NULL){
         current = current->next;
     }
-
-    current->next = newNode;
+    current->next = new_node;
 }
 
-void searchNode(Node* head, const char* id, Node** hasil)
+void search_node(Node* head, const char* id, Node** hasil)
 {
     Node* current;
 
@@ -95,66 +91,61 @@ void searchNode(Node* head, const char* id, Node** hasil)
     current = head;
 
     while (current != NULL) {
-        if (strcmp(current->data.id, id) == 0) {
+        if (strcmp(current->data.id, id) == 0){
             *hasil = current;
             return;
         }
-
         current = current->next;
     }
 }
 
-void deletenode(Node** head, const char* id, char* statusHapus)
+void delete_node(Node** head, const char* id, char* status_hapus)
 {
     Node* current;
     Node* previous;
 
-    *statusHapus = 'G';
+    *status_hapus = 'G';
 
-    if (*head == NULL) {
+    if (*head == NULL){
         return;
     }
-
     current = *head;
     previous = NULL;
 
-    while (current != NULL && strcmp(current->data.id, id) != 0) {
+    while (current != NULL && strcmp(current->data.id, id) != 0){
         previous = current;
         current = current->next;
     }
-
-    if (current == NULL) {
+    if (current == NULL){
         return;
     }
 
-    if (previous == NULL) {
+    if (previous == NULL){
         *head = current->next;
-        *statusHapus = 'A';
+        *status_hapus = 'A';
     } else {
         previous->next = current->next;
 
-        if (current->next == NULL) {
-            *statusHapus = 'K';
+        if (current->next == NULL){
+            *status_hapus = 'K';
         } else {
-            *statusHapus = 'T';
+            *status_hapus = 'T';
         }
     }
-
-    lepasNode(current);
+    lepas_node(current);
 }
 
-void clearList(Node** head)
+void clear_list(Node** head)
 {
     Node* current;
-    Node* nextNode;
+    Node* next_node;
 
     current = *head;
 
-    while (current != NULL) {
-        nextNode = current->next;
-        lepasNode(current);
-        current = nextNode;
+    while (current != NULL){
+        next_node = current->next;
+        lepas_node(current);
+        current = next_node;
     }
-
     *head = NULL;
 }
