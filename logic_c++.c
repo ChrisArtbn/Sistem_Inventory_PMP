@@ -273,7 +273,6 @@ void mulaiProgram(void) {
         addNode(&head, dummy);
     }
     printf_P(PSTR("[SISTEM] 50 Data berhasil dimuat!\n"));
-    // ===========================================
 
     while (pilihan != 0) {
         cetakMenuUtama();
@@ -293,10 +292,6 @@ void mulaiProgram(void) {
             tampilkanData(head);
         } else if (pilihan == 7) {
             ringkasan(head);
-        } else if (pilihan == 8) {
-            muatDariFile(&head, "input.txt"); 
-        } else if (pilihan == 9) {
-            simpanKeFile(head, "output.txt");
         } else if (pilihan == 0) {
             printf_P(PSTR("Program selesai\n"));
         } else {
