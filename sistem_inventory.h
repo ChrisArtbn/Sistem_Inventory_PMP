@@ -67,8 +67,7 @@ void update_status(Memory_Pool_Inventaris *mp);
 void tampilkan_semua_data(MemoryPoolInventaris *mp);
 void tampilkan_ringkasan(MemoryPoolInventaris *mp);
 
-// Fungsi Utilitas Input
-void bacaPilihanMenu(int *pilihan);
-void bacaInputID(uint16_t *id);
+void baca_pilihan_menu(int *pilihan);
+void baca_input_ID(uint16_t *id);
 
 #endif
