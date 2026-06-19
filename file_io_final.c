@@ -64,7 +64,7 @@ void baca_input_ID(char *id)
     scanf(" %49s", id);
 }
 
-void baca_input_stok_baru(int *stokBaru)
+void baca_input_stock_baru(int *stokBaru)
 {
     printf("Masukkan Jumlah Stok : ");
     scanf("%d", stokBaru);
