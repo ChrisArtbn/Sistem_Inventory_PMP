@@ -42,8 +42,6 @@ void cetakMenuUtama(void) {
     printf_P(PSTR("5. Perbarui Status Barang\n"));
     printf_P(PSTR("6. Tampilkan Seluruh Data Inventaris\n"));
     printf_P(PSTR("7. Tampilkan Ringkasan Inventaris\n"));
-    printf_P(PSTR("8. Muat data dari input.txt (Butuh SD Card)\n"));
-    printf_P(PSTR("9. Simpan data ke output.txt (Butuh SD Card)\n"));
     printf_P(PSTR("Silakan masukkan pilihan Anda (0 untuk keluar): "));
 }
 
