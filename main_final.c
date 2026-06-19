@@ -2,6 +2,6 @@
 
 int main(void)
 {
-    mulaiProgram();
+    mulai_program();
     return 0;
 }
