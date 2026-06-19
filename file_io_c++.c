@@ -85,10 +85,10 @@ void bacainputdata(InventarisLab *data) {
     else if (status_char == 'R' || status_char == 'r') data->status_barang = RUSAK;
     else data->status_barang = HABIS;
 
-    printf_P(PSTR("Masukkan Pemilik Barang (Inisial 3 huruf): "));
+    printf_P(PSTR("\nMasukkan Pemilik Barang (Inisial 3 huruf): "));
     scanf(" %3s", data->pemilik);
 
-    printf_P(PSTR("Masukkan PIC (Inisial 3 huruf): "));
+    printf_P(PSTR("\nMasukkan PIC (Inisial 3 huruf): "));
     scanf(" %3s", data->pic);
 }
 
