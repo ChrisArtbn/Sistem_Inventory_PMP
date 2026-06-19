@@ -11,7 +11,7 @@
 #define MEMORY_WARNING_SLOT 5
 
 typedef enum {
-    LOKASI_RAK_A = 0, LOKASI_RAK_B = 1, LOKASI_LACI_1 = 2, LOKASI_LACI_2 = 3
+    LOKASI_Lab_1 = 0, LOKASI_Lab_2 = 1, LOKASI_Lab_3 = 2, LOKASI_Lab_4 = 3
 } Lokasi;
 
 typedef enum {

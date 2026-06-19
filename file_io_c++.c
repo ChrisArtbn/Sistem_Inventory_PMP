@@ -1,4 +1,4 @@
-#include "inventory_c++.h"
+#include "inventory_final.h"
 
 static uint8_t stringKeKategori(const char* str) {
     if (strstr(str, "Board")) return KATEG_BOARD;
@@ -15,17 +15,17 @@ static const char* kategoriKeString(uint8_t k) {
 }
 
 static uint8_t stringKeLokasi(const char* str) {
-    if (strstr(str, "Rak B")) return LOKASI_RAK_B;
-    if (strstr(str, "Laci 1")) return LOKASI_LACI_1;
-    if (strstr(str, "Laci 2")) return LOKASI_LACI_2;
-    return LOKASI_RAK_A; 
+    if (strstr(str, "Lab 2")) return LOKASI_Lab_2;
+    if (strstr(str, "Lab 3")) return LOKASI_Lab_3;
+    if (strstr(str, "Lab 4")) return LOKASI_Lab_4;
+    return LOKASI_Lab_1; 
 }
 
 static const char* lokasiKeString(uint8_t l) {
-    if (l == LOKASI_RAK_B) return "Rak B";
-    if (l == LOKASI_LACI_1) return "Laci 1";
-    if (l == LOKASI_LACI_2) return "Laci 2";
-    return "Rak A";
+    if (l == LOKASI_Lab_2) return "Lab 2";
+    if (l == LOKASI_Lab_3) return "Lab 3";
+    if (l == LOKASI_Lab_4) return "Lab 4";
+    return "Lab 1";
 }
 
 static void clearInputBuffer(void) {
@@ -74,7 +74,7 @@ void bacainputdata(InventarisLab *data) {
     scanf("%d", &stok);
     data->jumlah_stok = (uint8_t)stok;
 
-    printf_P(PSTR("Masukkan Lokasi Fisik (Rak A/Rak B/Laci 1/Laci 2): "));
+    printf_P(PSTR("Masukkan Lokasi Fisik (Lab 1/Lab 2/Lab 3/Lab 4): "));
     scanf(" %14[^\n]", temp_lokasi);
     data->id_lokasi = stringKeLokasi(temp_lokasi);
 

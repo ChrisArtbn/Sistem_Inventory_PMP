@@ -1,17 +1,28 @@
 extern "C" {
-    #include "inventory_c++.h"
+    #include "inventory_final.h"
 } 
 
+// Jembatan agar printf bisa tampil sempurna di Serial Monitor
 static int uart_putchar(char c, FILE *stream) {
-    if (c == '\n') Serial.write('\r');
-    Serial.write(c);
+    if (c == '\n') {
+        Serial.println(); // Biarkan core Arduino yang menangani enter secara native
+    } else {
+        Serial.print(c);
+    }
     return 0;
 }
 
+// Jembatan agar scanf bisa membaca ketikan dan merespon Enter
 static int uart_getchar(FILE *stream) {
-    while (!Serial.available());
+    while (!Serial.available()); 
     int c = Serial.read();
-    Serial.write(c); 
+    
+    // Supaya saat mengetik dan menekan Enter, kursor layar otomatis pindah baris
+    if (c == '\n' || c == '\r') {
+        Serial.println(); 
+    } else {
+        Serial.print((char)c); // Tampilkan ketikan (echo) ke layar
+    }
     return c;
 }
 
