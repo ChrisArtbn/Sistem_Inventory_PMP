@@ -1,104 +1,104 @@
-#include "inventory_final.h"
+#include "sistem_inventory.h"
 
-void normalisasiStatus(char* status)
+void normalisasi_status(char* status)
 {
     *status = (char)toupper((unsigned char)*status);
 }
 
-void validasiStatus(char status, int* valid)
+void validasi_status(char status, int* valid)
 {
     *valid = 0;
 
-    if (status == 'T' || status == 'D' || status == 'R' || status == 'H') {
+    if (status == 'T' || status == 'D' || status == 'R' || status == 'H'){
         *valid = 1;
     }
 }
 
-void tambahBarang(Node** head)
+void tambah_barang(Node** head)
 {
-    int sisaSlot;
+    int sisa_slot;
     int valid;
-    InventoryItem data;
+    inventory_item data;
     Node* tempbarang;
 
-    cekMemori(&sisaSlot);
+    cek_memori(&sisa_slot);
 
-    if (sisaSlot <= 0) {
+    if (sisa_slot <= 0){
         printf("Memori penuh, barang gagal ditambahkan\n");
         return;
     }
 
-    printf("Masukkan id: ");
+    printf("Masukkan ID : ");
     scanf(" %49s", data.id);
 
-    searchNode(*head, data.id, &tempbarang);
+    search_node(*head, data.id, &tempbarang);
 
-    if (tempbarang != NULL) {
-        printf("Barang duplikat, ID sudah ada di inventaris\n");
+    if (tempbarang != NULL){
+        printf("Barang ini duplikat, ID sudah ada di inventaris\n");
         return;
     }
 
-    printf("Masukkan nama barang: ");
+    printf("Masukkan Nama Barang : ");
     scanf(" %99[^\n]", data.nama);
 
-    printf("Masukkan Lokasi: ");
+    printf("Masukkan Lokasi : ");
     scanf(" %99[^\n]", data.lokasi);
 
-    printf("Masukkan Kategori: ");
+    printf("Masukkan Kategori : ");
     scanf(" %49[^\n]", data.kategori);
 
-    printf("Masukkan Jumlah Stok: ");
+    printf("Masukkan Jumlah Stok : ");
     scanf("%d", &data.stok);
 
-    if (data.stok < 0) {
+    if (data.stok < 0){
         printf("Stok tidak boleh negatif\n");
         return;
     }
 
-    printf("Masukkan Status Barang (T=tersedia, D=dipinjam, R=rusak, H=habis): ");
+    printf("Masukkan Status Barang (T=tersedia, D=dipinjam, R=rusak, H=habis) : ");
     scanf(" %c", &data.status);
 
-    normalisasiStatus(&data.status);
-    validasiStatus(data.status, &valid);
+    normalisasi_status(&data.status);
+    validasi_status(data.status, &valid);
 
     if (valid == 0) {
         printf("Status tidak valid\n");
         return;
     }
 
-    printf("Masukkan Nama Pemilik: ");
+    printf("Masukkan Nama Pemilik : ");
     scanf(" %99[^\n]", data.pemilik);
 
-    printf("Masukkan Nama PIC: ");
+    printf("Masukkan Nama PIC : ");
     scanf(" %99[^\n]", data.pic);
 
-    if (data.stok == 0 && data.status != 'H') {
+    if (data.stok == 0 && data.status != 'H'){
         printf("Stok 0, status otomatis diubah menjadi Habis\n");
         data.status = 'H';
     }
 
-    if (data.stok > 0 && data.status == 'H') {
+    if (data.stok > 0 && data.status == 'H'){
         printf("Stok lebih dari 0, status otomatis diubah menjadi Tersedia\n");
         data.status = 'T';
     }
 
-    addNode(head, data);
+    add_node(head, data);
 
     printf("Barang berhasil dimasukkan\n");
 
-    cekMemori(&sisaSlot);
+    cek_memori(&sisa_slot);
 
-    if (sisaSlot <= MEMORY_WARNING_SLOT && sisaSlot > 0) {
-        printf("Peringatan: memori hampir penuh, sisa slot %d\n", sisaSlot);
+    if (sisa_slot <= MEMORY_WARNING_SLOT && sisa_slot > 0){
+        printf("Peringatan: memori hampir penuh, sisa slot %d\n", sisa_slot);
     }
 }
 
-void hapusBarang(Node** head)
+void hapus_barang(Node** head)
 {
     char tempid[ID_LEN];
-    char statusHapus;
+    char status_hapus;
 
-    if (*head == NULL) {
+    if (*head == NULL){
         printf("Inventory Kosong\n");
         return;
     }
@@ -106,74 +106,72 @@ void hapusBarang(Node** head)
     printf("Masukkan ID barang yang mau dihapus: ");
     scanf(" %49s", tempid);
 
-    deletenode(head, tempid, &statusHapus);
+    delete_node(head, tempid, &status_hapus);
 
-    if (statusHapus == 'G') {
+    if (status_hapus == 'G'){
         printf("Barang tidak ditemukan\n");
     } else {
-        if (statusHapus == 'A') {
+        if (status_hapus == 'A'){
             printf("Node pertama berhasil dihapus\n");
-        } else if (statusHapus == 'T') {
+        } else if (status_hapus == 'T'){
             printf("Node tengah berhasil dihapus\n");
-        } else if (statusHapus == 'K') {
+        } else if (status_hapus == 'K'){
             printf("Node akhir berhasil dihapus\n");
         }
-
         printf("Barang berhasil dihapus\n");
     }
 }
 
-void cariBarang(Node* head)
+void cari_barang(Node* head)
 {
     char tempid[ID_LEN];
     Node* tempor;
 
-    if (head == NULL) {
+    if (head == NULL){
         printf("Inventory Kosong\n");
         return;
     }
-
     printf("Masukkan id: ");
     scanf(" %49s", tempid);
 
-    searchNode(head, tempid, &tempor);
+    search_node(head, tempid, &tempor);
 
-    if (tempor != NULL) {
+    if (tempor != NULL){
         printf("Barang ditemukan\n");
-        tampilkanDetailBarang(tempor);
+        tampilkan_detail_barang(tempor);
     } else {
         printf("Barang tidak ditemukan\n");
     }
 }
 
-void updateStok(Node* head)
+void update_stock(Node* head)
 {
     char tempid[ID_LEN];
     Node* tempor;
     int tempangka;
     int pilihan;
 
-    if (head == NULL) {
+    if (head == NULL){
         printf("Inventory Kosong\n");
         return;
     }
 
-    printf("Masukkan id barang: ");
+    printf("Masukkan id barang : ");
     scanf(" %49s", tempid);
 
-    searchNode(head, tempid, &tempor);
+    search_node(head, tempid, &tempor);
 
-    if (tempor == NULL) {
+    if (tempor == NULL){
         printf("ID tidak ada dalam inventory\n");
         return;
     }
 
-    printf("Stok sekarang: %d\n", tempor->data.stok);
+    printf("Stock sekarang: %d\n", tempor->data.stok);
 
-    printf("Mau berubah berapa banyak? ");
+    printf("Mau berubah berapa banyak kang? ");
     scanf("%d", &tempangka);
 
-    if (tempangka < 0) {
+    if (tempangka < 0){
         printf("Jumlah perubahan stok tidak boleh negatif\n");
         return;
     }
@@ -181,17 +179,17 @@ void updateStok(Node* head)
     printf("Ketik 1 jika ingin menambah dan 2 jika ingin mengurangi: ");
     scanf("%d", &pilihan);
 
-    if (pilihan == 1) {
+    if (pilihan == 1){
         tempor->data.stok += tempangka;
         printf("Stok telah ditambahkan\n");
 
         if (tempor->data.stok > 0 && tempor->data.status == 'H') {
             tempor->data.status = 'T';
         }
-    } else if (pilihan == 2) {
-        if (tempangka > tempor->data.stok) {
+    } else if (pilihan == 2){
+        if (tempangka > tempor->data.stok){
             printf("Jumlah melebihi stok saat ini\n");
-        } else {
+        } else{
             tempor->data.stok -= tempangka;
             printf("Stok berhasil dikurangi\n");
 
@@ -199,59 +197,56 @@ void updateStok(Node* head)
                 tempor->data.status = 'H';
             }
         }
-    } else {
+    } else{
         printf("Pilihan update stok tidak valid\n");
     }
 }
 
-void updateStatus(Node* head)
+void update_status(Node* head)
 {
     char tempid[ID_LEN];
-    char newstats;
+    char new_stats;
     int valid;
     Node* tempor;
 
-    if (head == NULL) {
+    if (head == NULL){
         printf("Inventory Kosong\n");
         return;
     }
-
     printf("Masukkan id barang: ");
     scanf(" %49s", tempid);
 
-    searchNode(head, tempid, &tempor);
+    search_node(head, tempid, &tempor);
 
-    if (tempor == NULL) {
+    if (tempor == NULL){
         printf("Barang tidak ditemukan\n");
         return;
     }
+    printf("Status saat ini adalah : %c\n", tempor->data.status);
+    printf("Pilih status (T=tersedia, D=dipinjam, R=rusak, H=habis) : ");
+    scanf(" %c", &new_stats);
 
-    printf("Status saat ini adalah: %c\n", tempor->data.status);
-    printf("Pilih status (T=tersedia, D=dipinjam, R=rusak, H=habis): ");
-    scanf(" %c", &newstats);
+    normalisasi_status(&new_stats);
+    validasi_status(new_stats, &valid);
 
-    normalisasiStatus(&newstats);
-    validasiStatus(newstats, &valid);
+    if (valid == 1){
+        tempor->data.status = new_stats;
 
-    if (valid == 1) {
-        tempor->data.status = newstats;
-
-        if (newstats == 'H') {
+        if (new_stats == 'H'){
             tempor->data.stok = 0;
         }
-
         printf("Status berhasil diperbarui\n");
     } else {
         printf("Status tidak valid\n");
     }
 }
 
-void tampilkanData(Node* head)
+void tampilkan_data(Node* head)
 {
     Node* current;
     int i;
 
-    if (head == NULL) {
+    if (head == NULL){
         printf("Inventory Kosong\n");
         return;
     }
@@ -259,9 +254,9 @@ void tampilkanData(Node* head)
     current = head;
     i = 1;
 
-    while (current != NULL) {
+    while (current != NULL){
         printf("Item ke-%d\n", i);
-        tampilkanDetailBarang(current);
+        tampilkan_detail_barang(current);
         current = current->next;
         i++;
     }
@@ -269,64 +264,63 @@ void tampilkanData(Node* head)
 
 void ringkasan(Node* head)
 {
-    int totalJenis;
-    int totalStok;
-    int countstattersedia;
-    int countstatdipinjam;
-    int countstathabis;
-    int countstatrusak;
-    int sisaSlot;
+    int total_jenis;
+    int total_stok;
+    int count_stat_tersedia;
+    int count_stat_dipinjam;
+    int count_stat_habis;
+    int count_stat_rusak;
+    int sisa_slot;
     Node* current;
 
-    if (head == NULL) {
+    if (head == NULL){
         printf("Data kosong\n");
         return;
     }
 
-    totalJenis = 0;
-    totalStok = 0;
-    countstattersedia = 0;
-    countstatdipinjam = 0;
-    countstathabis = 0;
-    countstatrusak = 0;
+    total_jenis = 0;
+    total_stok = 0;
+    count_stat_tersedia = 0;
+    count_stat_dipinjam = 0;
+    count_stat_habis = 0;
+    count_stat_rusak = 0;
 
     current = head;
 
-    while (current != NULL) {
-        totalJenis++;
-        totalStok += current->data.stok;
+    while (current != NULL){
+        total_jenis++;
+        total_stok += current->data.stok;
 
-        if (current->data.status == 'T') {
-            countstattersedia++;
-        } else if (current->data.status == 'H') {
-            countstathabis++;
-        } else if (current->data.status == 'D') {
-            countstatdipinjam++;
-        } else if (current->data.status == 'R') {
-            countstatrusak++;
+        if (current->data.status == 'T'){
+            count_stat_tersedia++;
+        } else if (current->data.status == 'H'){
+            count_stat_habis++;
+        } else if (current->data.status == 'D'){
+            count_stat_dipinjam++;
+        } else if (current->data.status == 'R'){
+            count_stat_rusak++;
         }
-
         current = current->next;
     }
 
-    cekMemori(&sisaSlot);
+    cek_memori(&sisa_slot);
 
     printf("\nRingkasan Inventaris\n");
-    printf("Total Jenis Barang: %d\n", totalJenis);
-    printf("Total Stok Barang : %d\n", totalStok);
-    printf("Jumlah Tersedia   : %d\n", countstattersedia);
-    printf("Jumlah Dipinjam   : %d\n", countstatdipinjam);
-    printf("Jumlah Rusak      : %d\n", countstatrusak);
-    printf("Jumlah Habis      : %d\n", countstathabis);
-    printf("Kapasitas Maksimum: %d item\n", MAX_ITEMS);
-    printf("Sisa Slot Memori  : %d item\n", sisaSlot);
+    printf("Total Jenis Barang : %d\n", total_jenis);
+    printf("Total Stok Barang  : %d\n", total_stok);
+    printf("Jumlah Tersedia    : %d\n", count_stat_tersedia);
+    printf("Jumlah Dipinjam    : %d\n", count_stat_dipinjam);
+    printf("Jumlah Rusak       : %d\n", count_stat_rusak);
+    printf("Jumlah Habis       : %d\n", count_stat_habis);
+    printf("Kapasitas Maksimum : %d item\n", MAX_ITEMS);
+    printf("Sisa Slot Memori   : %d item\n", sisa_slot);
 
-    if (sisaSlot <= MEMORY_WARNING_SLOT && sisaSlot > 0) {
+    if (sisa_slot <= MEMORY_WARNING_SLOT && sisa_slot > 0){
         printf("Peringatan: memori hampir penuh\n");
     }
 }
 
-void mulaiProgram(void)
+void mulai_program(void)
 {
     Node* head;
     int pilihan;
@@ -334,36 +328,35 @@ void mulaiProgram(void)
     head = NULL;
     pilihan = -1;
 
-    initLinkedList();
+    init_Linked_List();
 
-    while (pilihan != 0) {
-        cetakMenuUtama();
-        bacapilmenu(&pilihan);
+    while (pilihan != 0){
+        cetak_menu_utama();
+        baca_pilihan_menu(&pilihan);
 
-        if (pilihan == 1) {
-            tambahBarang(&head);
-        } else if (pilihan == 2) {
-            hapusBarang(&head);
-        } else if (pilihan == 3) {
-            cariBarang(head);
-        } else if (pilihan == 4) {
-            updateStok(head);
-        } else if (pilihan == 5) {
-            updateStatus(head);
-        } else if (pilihan == 6) {
-            tampilkanData(head);
-        } else if (pilihan == 7) {
+        if (pilihan == 1){
+            tambah_barang(&head);
+        } else if (pilihan == 2){
+            hapus_barang(&head);
+        } else if (pilihan == 3){
+            cari_barang(head);
+        } else if (pilihan == 4){
+            update_stok(head);
+        } else if (pilihan == 5){
+            update_status(head);
+        } else if (pilihan == 6){
+            tampilkan_data(head);
+        } else if (pilihan == 7){
             ringkasan(head);
-        } else if (pilihan == 8) {
-            muatDariFile(&head, "input.txt");
-        } else if (pilihan == 9) {
-            simpanKeFile(head, "output.txt");
-        } else if (pilihan == 0) {
+        } else if (pilihan == 8){
+            muat_dari_file(&head, "input.txt");
+        } else if (pilihan == 9){
+            simpan_ke_file(head, "output.txt");
+        } else if (pilihan == 0){
             printf("Program selesai\n");
-        } else {
+        } else{
             printf("Pilihan tidak valid\n");
         }
     }
-
-    clearList(&head);
+    clear_list(&head);
 }
