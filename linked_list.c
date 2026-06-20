@@ -30,7 +30,6 @@ void add_node(Memory_Pool_Inventaris *mp, Inventaris_Lab new_item)
     Block* current;
 
     if (mp->freelist == NULL){
-        // Diubah menjadi printf_P
         printf_P(PSTR("Memori penuh, node baru gagal dibuat\n"));
         return;
     }
