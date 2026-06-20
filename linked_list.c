@@ -1,118 +1,87 @@
 #include "sistem_inventory.h"
 
-static Node node_pool[MAX_ITEMS];
-static int node_dipakai[MAX_ITEMS];
-
-static void ambil_node_kosong(Node** node_kosong){
+void in_it_pool(Memory_Pool_Inventaris *mp)
+{
     int i;
-    *node_kosong = NULL;
+    mp->activelist = NULL;
+    mp->freelist = NULL;
 
-    for (i = 0; i < MAX_ITEMS; i++){
-        if (node_dipakai[i] == 0) {
-            node_dipakai[i] = 1;
-            node_pool[i].next = NULL;
-
-            memset(&node_pool[i].data, 0, sizeof(inventory_item));
-            *node_kosong = &node_pool[i];
-            return;
-        }
+    for (i = MAX_ITEMS - 1; i >= 0; i--){
+        memset(&mp->pool[i].active.payload, 0, sizeof(Inventaris_Lab));
+        mp->pool[i].next_free = mp->freelist;
+        mp->freelist = &mp->pool[i];
     }
 }
 
-static void lepas_node(Node* node){
-    int i;
-
-    for (i = 0; i < MAX_ITEMS; i++){
-        if (&node_pool[i] == node){
-            node_dipakai[i] = 0;
-            node_pool[i].next = NULL;
-
-            memset(&node_pool[i].data, 0, sizeof(inventory_item));
-            return;
-        }
+void cek_memori(Memory_Pool_Inventaris *mp, int* sisa_slot)
+{
+    int count = 0;
+    Block* current = mp->freelist;
+    while (current != NULL){
+        count++;
+        current = current->next_free;
     }
+    *sisa_slot = count;
 }
 
-void init_linked_list(void){
-    int i;
+void add_node(Memory_Pool_Inventaris *mp, Inventaris_Lab new_item)
+{
+    Block* new_node;
+    Block* current;
 
-    for (i = 0; i < MAX_ITEMS; i++){
-        node_dipakai[i] = 0;
-        node_pool[i].next = NULL;
-
-        memset(&node_pool[i].data, 0, sizeof(inventory_item));
-    }
-}
-
-void cek_memori(int* sisa_slot){
-    int i;
-    *sisa_slot = 0;
-
-    for (i = 0; i < MAX_ITEMS; i++){
-        if (node_dipakai[i] == 0){
-            (*sisa_slot)++;
-        }
-    }
-}
-
-void add_node(Node** head, inventory_item new_item){
-    Node* new_node;
-    Node* current;
-
-    ambil_node_kosong(&new_node);
-
-    if (new_node == NULL){
+    if (mp->freelist == NULL){
         printf("Memori penuh, node baru gagal dibuat\n");
         return;
     }
-    new_node->data = new_item;
-    new_node->next = NULL;
 
-    if (*head == NULL){
-        *head = new_node;
+    new_node = mp->freelist;
+    mp->freelist = new_node->next_free;
+
+    new_node->active.payload = new_item;
+    new_node->active.next_active = NULL;
+
+    if (mp->activelist == NULL){
+        mp->activelist = new_node;
         return;
     }
-    current = *head;
+    current = mp->activelist;
 
-    while (current->next != NULL){
-        current = current->next;
+    while (current->active.next_active != NULL){
+        current = current->active.next_active;
     }
-    current->next = new_node;
+    current->active.next_active = new_node;
 }
 
-void search_node(Node* head, const char* id, Node** hasil)
+Block* cari_node(Memory_Pool_Inventaris *mp, uint16_t id)
 {
-    Node* current;
-
-    *hasil = NULL;
-    current = head;
+    Block* current = mp->activelist;
 
     while (current != NULL){
-        if (strcmp(current->data.id, id) == 0){
-            *hasil = current;
-            return;
+        if (current->active.payload.id_barang == id){
+            return current;
         }
-        current = current->next;
+        current = current->active.next_active;
     }
+    return NULL;
 }
 
-void delete_node(Node** head, const char* id, char* status_hapus)
+void delete_node(Memory_Pool_Inventaris *mp, uint16_t id, char* status_hapus)
 {
-    Node* current;
-    Node* previous;
+    Block* current;
+    Block* previous;
 
     *status_hapus = 'G';
 
-    if (*head == NULL){
+    if (mp->activelist == NULL){
         return;
     }
 
-    current = *head;
+    current = mp->activelist;
     previous = NULL;
 
-    while (current != NULL && strcmp(current->data.id, id) != 0){
+    while (current != NULL && current->active.payload.id_barang != id){
         previous = current;
-        current = current->next;
+        current = current->active.next_active;
     }
 
     if (current == NULL){
@@ -120,33 +89,36 @@ void delete_node(Node** head, const char* id, char* status_hapus)
     }
 
     if (previous == NULL){
-        *head = current->next;
+        mp->activelist = current->active.next_active;
         *status_hapus = 'A';
     } 
     else{
-        previous->next = current->next;
+        previous->active.next_active = current->active.next_active;
 
-        if (current->next == NULL){
+        if (current->active.next_active == NULL){
             *status_hapus = 'K';
         } 
         else{
             *status_hapus = 'T';
         }
     }
-    lepas_node(current);
+    
+    memset(&current->active.payload, 0, sizeof(Inventaris_Lab));
+    current->next_free = mp->freelist;
+    mp->freelist = current;
 }
 
-void clear_list(Node** head)
+void clear_list(Memory_Pool_Inventaris *mp)
 {
-    Node* current;
-    Node* next_node;
+    Block* current = mp->activelist;
+    Block* next_node;
 
-    current = *head;
-
-    while (current != NULL) {
-        next_node = current->next;
-        lepas_node(current);
+    while (current != NULL){
+        next_node = current->active.next_active;
+        memset(&current->active.payload, 0, sizeof(Inventaris_Lab));
+        current->next_free = mp->freelist;
+        mp->freelist = current;
         current = next_node;
     }
-    *head = NULL;
+    mp->activelist = NULL;
 }
