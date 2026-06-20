@@ -60,6 +60,7 @@ void tambah_barang(Memory_Pool_Inventaris *mp)
 
     printf("Masukkan Status Barang (T=tersedia, D=dipinjam, R=rusak, H=habis) : ");
     scanf(" %c", &temp_status);
+    while (getchar() != '\n');
 
     normalisasi_status(&temp_status);
     validasi_status(temp_status, &valid);
@@ -76,9 +77,11 @@ void tambah_barang(Memory_Pool_Inventaris *mp)
 
     printf("Masukkan Nama Pemilik : ");
     scanf(" %3[^\n]", data.pemilik);
+    while (getchar() != '\n');
 
     printf("Masukkan Nama PIC : ");
     scanf(" %3[^\n]", data.pic);
+    while (getchar() != '\n');
 
     if (data.jumlah_stock == 0 && data.status_barang != HABIS){
         printf("Stok 0, status otomatis diubah menjadi Habis\n");
