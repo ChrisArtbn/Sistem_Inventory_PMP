@@ -330,6 +330,7 @@ void mulai_program()
     pilihan = -1;
     in_it_pool(&mp);
 
+    // untuk dummy data, bisa diaktifkan
     // isi_data_dummy(&mp);
     // printf_P(PSTR("50 Data dummy berhasil dimuat!\n"));
 
@@ -382,24 +383,18 @@ void isi_data_dummy(Memory_Pool_Inventaris *mp)
     for (i = 1; i <= 50; i++) {
         dummy.id_barang = (uint16_t)i;
         
-        // Nama otomatis: Brg-1, Brg-2, dst
         sprintf(dummy.nama, "Brg-%d", i); 
         
-        // Kategori: 0=SENSOR, 1=BOARD, 2=MOTOR, 3=KABEL
         dummy.id_kategori = (uint8_t)(i % 4);
         
-        // Lokasi: 0=LAB_1, 1=LAB_2, 2=LAB_3, 3=LAB_4
         dummy.id_lokasi = (uint8_t)((i / 4) % 4); 
         
-        // Stok: Acak antara 1 sampai 10
         dummy.jumlah_stock = (uint8_t)(i % 10 + 1);
         
-        // Status: Otomatis diset Tersedia
         dummy.status_barang = TERSEDIA;
         
-        // Pemilik dan PIC (Sesuaikan dengan kebutuhan)
         strcpy(dummy.pemilik, "LUIS");
-        strcpy(dummy.pic, "LAB1");
+        strcpy(dummy.pic, "Ken");
         
         add_node(mp, dummy);
     }
