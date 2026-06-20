@@ -329,9 +329,6 @@ void mulai_program()
     pilihan = -1;
     in_it_pool(&mp);
 
-    // isi_data_dummy(&mp);
-    // printf_P(PSTR("50 Data dummy berhasil dimuat!\n"));
-
     while (pilihan != 0){
         menu_utama();
         baca_pilihan_menu(&pilihan);
@@ -359,14 +356,14 @@ void mulai_program()
     clear_list(&mp);
 }
 
-void cetak_kategori_teks(uint8_t kat) {
+void cetak_kategori_teks(uint8_t kat){
     if (kat == KATEG_SENSOR) printf_P(PSTR("Sensor"));
     else if (kat == KATEG_BOARD) printf_P(PSTR("Board"));
     else if (kat == KATEG_MOTOR) printf_P(PSTR("Motor"));
     else if (kat == KATEG_KABEL) printf_P(PSTR("Kabel"));
 }
 
-void cetak_lokasi_teks(uint8_t lok) {
+void cetak_lokasi_teks(uint8_t lok){
     if (lok == LOKASI_LAB_1) printf_P(PSTR("Lab 1"));
     else if (lok == LOKASI_LAB_2) printf_P(PSTR("Lab 2"));
     else if (lok == LOKASI_LAB_3) printf_P(PSTR("Lab 3"));
@@ -378,25 +375,14 @@ void isi_data_dummy(Memory_Pool_Inventaris *mp)
     Inventaris_Lab dummy;
     int i;
 
-    for (i = 1; i <= 50; i++) {
+    for (i = 1; i <= 50; i++){
         dummy.id_barang = (uint16_t)i;
-        
-        // Nama otomatis: Brg-1, Brg-2, dst
         sprintf(dummy.nama, "Brg-%d", i); 
-        
-        // Kategori: 0=SENSOR, 1=BOARD, 2=MOTOR, 3=KABEL
         dummy.id_kategori = (uint8_t)(i % 4);
-        
-        // Lokasi: 0=LAB_1, 1=LAB_2, 2=LAB_3, 3=LAB_4
         dummy.id_lokasi = (uint8_t)((i / 4) % 4); 
-        
-        // Stok: Acak antara 1 sampai 10
         dummy.jumlah_stock = (uint8_t)(i % 10 + 1);
-        
-        // Status: Otomatis diset Tersedia
         dummy.status_barang = TERSEDIA;
-        
-        // Pemilik dan PIC (Sesuaikan dengan kebutuhan)
+      
         strcpy(dummy.pemilik, "LUIS");
         strcpy(dummy.pic, "LAB1");
         
