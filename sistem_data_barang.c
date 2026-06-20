@@ -176,7 +176,7 @@ void update_stock(Memory_Pool_Inventaris *mp)
     }
 
     printf_P(PSTR("Stock sekarang: %d\n"), tempor->active.payload.jumlah_stock);
-    printf_P(PSTR("Mau berubah berapa banyak kang? "));
+    printf_P(PSTR("Mau Ditambah/Dikurang berapa? "));
     scanf("%d", &tempangka);
 
     if (tempangka < 0){
