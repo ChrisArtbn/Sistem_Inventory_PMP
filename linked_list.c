@@ -3,50 +3,48 @@
 static Node node_pool[MAX_ITEMS];
 static int node_dipakai[MAX_ITEMS];
 
-static void ambil_node_kosong(Node** nodeKosong)
-{
+static void ambil_node_kosong(Node** node_kosong){
     int i;
-
-    *nodeKosong = NULL;
+    *node_kosong = NULL;
 
     for (i = 0; i < MAX_ITEMS; i++){
         if (node_dipakai[i] == 0) {
             node_dipakai[i] = 1;
             node_pool[i].next = NULL;
-            memset(&node_pool[i].data, 0, sizeof(InventoryItem));
-            *nodeKosong = &node_pool[i];
+
+            memset(&node_pool[i].data, 0, sizeof(inventory_item));
+            *node_kosong = &node_pool[i];
             return;
         }
     }
 }
 
-static void lepas_node(Node* node)
-{
+static void lepas_node(Node* node){
     int i;
 
     for (i = 0; i < MAX_ITEMS; i++){
         if (&node_pool[i] == node){
             node_dipakai[i] = 0;
             node_pool[i].next = NULL;
-            memset(&node_pool[i].data, 0, sizeof(InventoryItem));
+
+            memset(&node_pool[i].data, 0, sizeof(inventory_item));
             return;
         }
     }
 }
 
-void init_linked_list(void)
-{
+void init_linked_list(void){
     int i;
 
     for (i = 0; i < MAX_ITEMS; i++){
         node_dipakai[i] = 0;
         node_pool[i].next = NULL;
-        memset(&node_pool[i].data, 0, sizeof(InventoryItem));
+
+        memset(&node_pool[i].data, 0, sizeof(inventory_item));
     }
 }
 
-void cek_memori(int* sisa_slot)
-{
+void cek_memori(int* sisa_slot){
     int i;
     *sisa_slot = 0;
 
@@ -57,8 +55,7 @@ void cek_memori(int* sisa_slot)
     }
 }
 
-void add_node(Node** head, InventoryItem newItem)
-{
+void add_node(Node** head, inventory_item new_item){
     Node* new_node;
     Node* current;
 
@@ -90,7 +87,7 @@ void search_node(Node* head, const char* id, Node** hasil)
     *hasil = NULL;
     current = head;
 
-    while (current != NULL) {
+    while (current != NULL){
         if (strcmp(current->data.id, id) == 0){
             *hasil = current;
             return;
@@ -109,6 +106,7 @@ void delete_node(Node** head, const char* id, char* status_hapus)
     if (*head == NULL){
         return;
     }
+
     current = *head;
     previous = NULL;
 
@@ -116,6 +114,7 @@ void delete_node(Node** head, const char* id, char* status_hapus)
         previous = current;
         current = current->next;
     }
+
     if (current == NULL){
         return;
     }
@@ -123,12 +122,14 @@ void delete_node(Node** head, const char* id, char* status_hapus)
     if (previous == NULL){
         *head = current->next;
         *status_hapus = 'A';
-    } else {
+    } 
+    else{
         previous->next = current->next;
 
         if (current->next == NULL){
             *status_hapus = 'K';
-        } else {
+        } 
+        else{
             *status_hapus = 'T';
         }
     }
@@ -142,7 +143,7 @@ void clear_list(Node** head)
 
     current = *head;
 
-    while (current != NULL){
+    while (current != NULL) {
         next_node = current->next;
         lepas_node(current);
         current = next_node;
