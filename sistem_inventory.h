@@ -73,8 +73,6 @@ void menu_utama();
 void baca_pilihan_menu(int *pilihan);
 void baca_input_ID(uint16_t *id);
 void tampilkan_detail_barang(Block* current);
-void muat_file(Memory_Pool_Inventaris *mp, const char* nama_file);
-void simpan_ke_file(Memory_Pool_Inventaris *mp, const char* nama_file);
 
 void add_node(Memory_Pool_Inventaris *mp, Inventaris_Lab new_item);
 Block* cari_node(Memory_Pool_Inventaris *mp, uint16_t id);
