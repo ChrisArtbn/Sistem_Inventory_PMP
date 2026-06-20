@@ -344,10 +344,6 @@ void mulai_program()
             tampilkan_semua_data(&mp);
         } else if (pilihan == 7){
             tampilkan_ringkasan(&mp);
-        } else if (pilihan == 8){
-            muat_file(&mp, "input.txt");
-        } else if (pilihan == 9){
-            simpan_ke_file(&mp, "output.txt");
         } else if (pilihan == 0){
             printf("Program selesai\n");
         } else{
