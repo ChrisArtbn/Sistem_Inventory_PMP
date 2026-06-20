@@ -66,8 +66,8 @@ void hapus_barang(Memory_Pool_Inventaris *mp);
 void cari_barang_berdasarkan_ID(Memory_Pool_Inventaris *mp);
 void update_stock(Memory_Pool_Inventaris *mp);
 void update_status(Memory_Pool_Inventaris *mp);
-void tampilkan_semua_data(MemoryPoolInventaris *mp);
-void tampilkan_ringkasan(MemoryPoolInventaris *mp);
+void tampilkan_semua_data(Memory_Pool_Inventaris *mp);
+void tampilkan_ringkasan(Memory_Pool_Inventaris *mp);
 
 void menu_utama();
 void baca_pilihan_menu(int *pilihan);

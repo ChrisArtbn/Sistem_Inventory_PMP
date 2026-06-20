@@ -61,8 +61,8 @@ void tambah_barang(Memory_Pool_Inventaris *mp)
     printf("Masukkan Status Barang (T=tersedia, D=dipinjam, R=rusak, H=habis) : ");
     scanf(" %c", &temp_status);
 
-    normalisasi_status(&temp.status);
-    validasi_status(temp.status, &valid);
+    normalisasi_status(&temp_status);
+    validasi_status(temp_status, &valid);
 
     if (valid == 0){
         printf("Status tidak valid\n");
@@ -250,7 +250,7 @@ void update_status(Memory_Pool_Inventaris *mp)
     }
 }
 
-void tampilkan_semua_data(MemoryPoolInventaris *mp)
+void tampilkan_semua_data(Memory_Pool_Inventaris *mp)
 {
     Block* current;
     int i;
@@ -271,7 +271,7 @@ void tampilkan_semua_data(MemoryPoolInventaris *mp)
     }
 }
 
-void tampilkan_ringkasan(MemoryPoolInventaris *mp)
+void tampilkan_ringkasan(Memory_Pool_Inventaris *mp)
 {
     int total_jenis = 0;
     int total_stok = 0;
