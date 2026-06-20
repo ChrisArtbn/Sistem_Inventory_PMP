@@ -318,7 +318,7 @@ void tampilkan_ringkasan(MemoryPoolInventaris *mp)
     }
 }
 
-void mulai_program(void)
+void mulai_program()
 {
     Memory_Pool_Inventaris mp;
     int pilihan;
