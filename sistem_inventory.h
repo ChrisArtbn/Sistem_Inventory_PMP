@@ -9,6 +9,7 @@
 
 #define MAX_ITEMS 50
 #define MEMORY_WARNING_SLOT 5
+#define LINE_LEN 256
 
 typedef enum{
     LOKASI_RAK_A = 0,
@@ -68,7 +69,16 @@ void update_status(Memory_Pool_Inventaris *mp);
 void tampilkan_semua_data(MemoryPoolInventaris *mp);
 void tampilkan_ringkasan(MemoryPoolInventaris *mp);
 
+void menu_utama();
 void baca_pilihan_menu(int *pilihan);
 void baca_input_ID(uint16_t *id);
+void tampilkan_detail_barang(Block* current);
+void muat_file(Memory_Pool_Inventaris *mp, const char* nama_file);
+void simpan_ke_file(Memory_Pool_Inventaris *mp, const char* nama_file);
+
+void add_node(Memory_Pool_Inventaris *mp, Inventaris_Lab new_item);
+Block* cari_node(Memory_Pool_Inventaris *mp, uint16_t id);
+void delete_node(Memory_Pool_Inventaris *mp, uint16_t id, char* status_hapus);
+void clear_list(Memory_Pool_Inventaris *mp);
 
 #endif
