@@ -1,5 +1,6 @@
 #include "sistem_inventory.h"
 
+
 void normalisasi_status(char* status)
 {
     *status = (char)toupper((unsigned char)*status);
@@ -38,18 +39,18 @@ void tambah_barang(Memory_Pool_Inventaris *mp)
         return;
     }
 
-    printf_P(PSTR("Masukkan Nama Barang : "));
+    printf_P(PSTR("Masukkan Nama Barang : (0-11 char)"));
     scanf(" %10[^\n]", data.nama);
 
-    printf_P(PSTR("Masukkan Lokasi : "));
+    printf_P(PSTR("Masukkan Lokasi : (0:LAB 1, 1:LAB 2, 2:LAB 3, 3:LAB 4) "));
     scanf("%d", &temp_lokasi);
     data.id_lokasi = (uint8_t)temp_lokasi;
 
-    printf_P(PSTR("Masukkan Kategori : "));
+    printf_P(PSTR("Masukkan Kategori : (0:Sensor, 1:Board, 2:Motor , 3:Kabel) "));
     scanf("%d", &temp_kategori);
     data.id_kategori = (uint8_t)temp_kategori;
 
-    printf_P(PSTR("Masukkan Jumlah Stok : "));
+    printf_P(PSTR("Masukkan Jumlah Stok : 0-255 "));
     scanf("%d", &temp_stok);
 
     if (temp_stok < 0){
@@ -76,11 +77,11 @@ void tambah_barang(Memory_Pool_Inventaris *mp)
     else if (temp_status == 'H') data.status_barang = HABIS;
 
     printf_P(PSTR("Masukkan Nama Pemilik : "));
-    scanf(" %3[^\n]", data.pemilik);
-    while (getchar() != '\n');
+    scanf(" %4[^\n]", data.pemilik); 
+    while (getchar() != '\n'); // Membersihkan buffer
 
     printf_P(PSTR("Masukkan Nama PIC : "));
-    scanf(" %3[^\n]", data.pic);
+    scanf(" %4[^\n]", data.pic);
     while (getchar() != '\n');
 
     if (data.jumlah_stock == 0 && data.status_barang != HABIS){

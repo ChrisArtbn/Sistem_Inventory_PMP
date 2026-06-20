@@ -34,7 +34,7 @@ void baca_pilihan_menu(int *pilihan)
 void baca_input_ID(uint16_t *id)
 {
     unsigned int temp_id;
-    printf_P(PSTR("Masukkan ID : "));
+    printf_P(PSTR("Masukkan ID (1-9999): "));
     if (scanf("%u", &temp_id) == 1){
         *id = (uint16_t)temp_id;
     } 
