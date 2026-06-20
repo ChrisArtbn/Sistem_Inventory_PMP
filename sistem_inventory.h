@@ -6,16 +6,17 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdint.h>
+#include <avr/pgmspace.h>
 
 #define MAX_ITEMS 50
 #define MEMORY_WARNING_SLOT 5
 #define LINE_LEN 256
 
 typedef enum{
-    LOKASI_RAK_A = 0,
-    LOKASI_RAK_B = 1,
-    LOKASI_LACI_1 = 2,
-    LOKASI_LACI_2 = 3
+    LOKASI_LAB_1 = 0,
+    LOKASI_LAB_2 = 1,
+    LOKASI_LAB_3 = 2,
+    LOKASI_LAB_4 = 3
 } Lokasi;
 
 typedef enum{
@@ -39,8 +40,8 @@ typedef struct __attribute__((packed)){
     uint8_t jumlah_stock;    
     uint8_t id_lokasi;     
     uint8_t status_barang;   
-    char pemilik[4];         
-    char pic[4];             
+    char pemilik[5];         
+    char pic[5];             
 } Inventaris_Lab;            
 
 typedef union Block{
@@ -78,5 +79,8 @@ void add_node(Memory_Pool_Inventaris *mp, Inventaris_Lab new_item);
 Block* cari_node(Memory_Pool_Inventaris *mp, uint16_t id);
 void delete_node(Memory_Pool_Inventaris *mp, uint16_t id, char* status_hapus);
 void clear_list(Memory_Pool_Inventaris *mp);
+void isi_data_dummy(Memory_Pool_Inventaris *mp);
+void cetak_kategori_teks(uint8_t kat);
+void cetak_lokasi_teks(uint8_t lok);
 
 #endif

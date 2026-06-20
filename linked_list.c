@@ -30,7 +30,8 @@ void add_node(Memory_Pool_Inventaris *mp, Inventaris_Lab new_item)
     Block* current;
 
     if (mp->freelist == NULL){
-        printf("Memori penuh, node baru gagal dibuat\n");
+        // Diubah menjadi printf_P
+        printf_P(PSTR("Memori penuh, node baru gagal dibuat\n"));
         return;
     }
 
@@ -42,14 +43,14 @@ void add_node(Memory_Pool_Inventaris *mp, Inventaris_Lab new_item)
 
     if (mp->activelist == NULL){
         mp->activelist = new_node;
-        return;
+    } 
+    else{
+        current = mp->activelist;
+        while (current->active.next_active != NULL){
+            current = current->active.next_active;
+        }
+        current->active.next_active = new_node;
     }
-    current = mp->activelist;
-
-    while (current->active.next_active != NULL){
-        current = current->active.next_active;
-    }
-    current->active.next_active = new_node;
 }
 
 Block* cari_node(Memory_Pool_Inventaris *mp, uint16_t id)
@@ -110,8 +111,14 @@ void delete_node(Memory_Pool_Inventaris *mp, uint16_t id, char* status_hapus)
 
 void clear_list(Memory_Pool_Inventaris *mp)
 {
-    Block* current = mp->activelist;
+    Block* current;
     Block* next_node;
+
+    if (mp->activelist == NULL){
+        return;
+    }
+
+    current = mp->activelist;
 
     while (current != NULL){
         next_node = current->active.next_active;

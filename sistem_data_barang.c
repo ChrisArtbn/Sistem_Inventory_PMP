@@ -26,7 +26,7 @@ void tambah_barang(Memory_Pool_Inventaris *mp)
     cek_memori(mp, &sisa_slot);
 
     if (sisa_slot <= 0){
-        printf("Memori penuh, barang gagal ditambahkan\n");
+        printf_P(PSTR("Memori penuh, barang gagal ditambahkan\n"));
         return;
     }
     baca_input_ID(&data.id_barang);
@@ -34,31 +34,31 @@ void tambah_barang(Memory_Pool_Inventaris *mp)
     temp_barang = cari_node(mp, data.id_barang);
 
     if (temp_barang != NULL){
-        printf("Barang ini duplikat, ID sudah ada di inventaris\n");
+        printf_P(PSTR("Barang ini duplikat, ID sudah ada di inventaris\n"));
         return;
     }
 
-    printf("Masukkan Nama Barang : ");
+    printf_P(PSTR("Masukkan Nama Barang : "));
     scanf(" %10[^\n]", data.nama);
 
-    printf("Masukkan Lokasi : ");
+    printf_P(PSTR("Masukkan Lokasi : "));
     scanf("%d", &temp_lokasi);
     data.id_lokasi = (uint8_t)temp_lokasi;
 
-    printf("Masukkan Kategori : ");
+    printf_P(PSTR("Masukkan Kategori : "));
     scanf("%d", &temp_kategori);
     data.id_kategori = (uint8_t)temp_kategori;
 
-    printf("Masukkan Jumlah Stok : ");
+    printf_P(PSTR("Masukkan Jumlah Stok : "));
     scanf("%d", &temp_stok);
 
     if (temp_stok < 0){
-        printf("Stok tidak boleh negatif\n");
+        printf_P(PSTR("Stok tidak boleh negatif\n"));
         return;
     }
     data.jumlah_stock = (uint8_t)temp_stok;
 
-    printf("Masukkan Status Barang (T=tersedia, D=dipinjam, R=rusak, H=habis) : ");
+    printf_P(PSTR("Masukkan Status Barang (T=tersedia, D=dipinjam, R=rusak, H=habis) : "));
     scanf(" %c", &temp_status);
     while (getchar() != '\n');
 
@@ -66,7 +66,7 @@ void tambah_barang(Memory_Pool_Inventaris *mp)
     validasi_status(temp_status, &valid);
 
     if (valid == 0){
-        printf("Status tidak valid\n");
+        printf_P(PSTR("Status tidak valid\n"));
         return;
     }
 
@@ -75,32 +75,32 @@ void tambah_barang(Memory_Pool_Inventaris *mp)
     else if (temp_status == 'R') data.status_barang = RUSAK;
     else if (temp_status == 'H') data.status_barang = HABIS;
 
-    printf("Masukkan Nama Pemilik : ");
+    printf_P(PSTR("Masukkan Nama Pemilik : "));
     scanf(" %3[^\n]", data.pemilik);
     while (getchar() != '\n');
 
-    printf("Masukkan Nama PIC : ");
+    printf_P(PSTR("Masukkan Nama PIC : "));
     scanf(" %3[^\n]", data.pic);
     while (getchar() != '\n');
 
     if (data.jumlah_stock == 0 && data.status_barang != HABIS){
-        printf("Stok 0, status otomatis diubah menjadi Habis\n");
+        printf_P(PSTR("Stok 0, status otomatis diubah menjadi Habis\n"));
         data.status_barang = HABIS;
     }
 
     if (data.jumlah_stock > 0 && data.status_barang == HABIS){
-        printf("Stok lebih dari 0, status otomatis diubah menjadi Tersedia\n");
+        printf_P(PSTR("Stok lebih dari 0, status otomatis diubah menjadi Tersedia\n"));
         data.status_barang = TERSEDIA;
     }
 
     add_node(mp, data);
 
-    printf("Barang berhasil dimasukkan\n");
+    printf_P(PSTR("Barang berhasil dimasukkan\n"));
 
     cek_memori(mp, &sisa_slot);
 
     if (sisa_slot <= MEMORY_WARNING_SLOT && sisa_slot > 0){
-        printf("Peringatan: memori hampir penuh, sisa slot %d\n", sisa_slot);
+        printf_P(PSTR("Peringatan: memori hampir penuh, sisa slot %d\n"), sisa_slot);
     }
 }
 
@@ -110,7 +110,7 @@ void hapus_barang(Memory_Pool_Inventaris *mp)
     char status_hapus;
 
     if (mp->activelist == NULL){
-        printf("Inventory Kosong\n");
+        printf_P(PSTR("Inventory Kosong\n"));
         return;
     }
 
@@ -118,17 +118,17 @@ void hapus_barang(Memory_Pool_Inventaris *mp)
     delete_node(mp, tempid, &status_hapus);
 
     if (status_hapus == 'G'){
-        printf("Barang tidak ditemukan\n");
+        printf_P(PSTR("Barang tidak ditemukan\n"));
     } 
     else{
         if (status_hapus == 'A'){
-            printf("Node pertama berhasil dihapus\n");
+            printf_P(PSTR("Node pertama berhasil dihapus\n"));
         } else if (status_hapus == 'T'){
-            printf("Node tengah berhasil dihapus\n");
+            printf_P(PSTR("Node tengah berhasil dihapus\n"));
         } else if (status_hapus == 'K'){
-            printf("Node akhir berhasil dihapus\n");
+            printf_P(PSTR("Node akhir berhasil dihapus\n"));
         }
-        printf("Barang berhasil dihapus\n");
+        printf_P(PSTR("Barang berhasil dihapus\n"));
     }
 }
 
@@ -138,7 +138,7 @@ void cari_barang_berdasarkan_ID(Memory_Pool_Inventaris *mp)
     Block* tempor;
 
     if (mp->activelist == NULL){
-        printf("Inventory Kosong\n");
+        printf_P(PSTR("Inventory Kosong\n"));
         return;
     }
     
@@ -146,11 +146,11 @@ void cari_barang_berdasarkan_ID(Memory_Pool_Inventaris *mp)
     tempor = cari_node(mp, tempid);
 
     if (tempor != NULL){
-        printf("Barang ditemukan\n");
+        printf_P(PSTR("Barang ditemukan\n"));
         tampilkan_detail_barang(tempor);
     } 
     else{
-        printf("Barang tidak ditemukan\n");
+        printf_P(PSTR("Barang tidak ditemukan\n"));
     }
 }
 
@@ -162,7 +162,7 @@ void update_stock(Memory_Pool_Inventaris *mp)
     int pilihan;
 
     if (mp->activelist == NULL){
-        printf("Inventory Kosong\n");
+        printf_P(PSTR("Inventory Kosong\n"));
         return;
     }
 
@@ -170,36 +170,36 @@ void update_stock(Memory_Pool_Inventaris *mp)
     tempor = cari_node(mp, tempid);
 
     if (tempor == NULL){
-        printf("ID tidak ada dalam inventory\n");
+        printf_P(PSTR("ID tidak ada dalam inventory\n"));
         return;
     }
 
-    printf("Stock sekarang: %d\n", tempor->active.payload.jumlah_stock);
-    printf("Mau berubah berapa banyak kang? ");
+    printf_P(PSTR("Stock sekarang: %d\n"), tempor->active.payload.jumlah_stock);
+    printf_P(PSTR("Mau berubah berapa banyak kang? "));
     scanf("%d", &tempangka);
 
     if (tempangka < 0){
-        printf("Jumlah perubahan stok tidak boleh negatif\n");
+        printf_P(PSTR("Jumlah perubahan stok tidak boleh negatif\n"));
         return;
     }
 
-    printf("Ketik 1 jika ingin menambah dan 2 jika ingin mengurangi : ");
+    printf_P(PSTR("Ketik 1 jika ingin menambah dan 2 jika ingin mengurangi : "));
     scanf("%d", &pilihan);
 
     if (pilihan == 1){
         tempor->active.payload.jumlah_stock += (uint8_t)tempangka;
-        printf("Stok telah ditambahkan\n");
+        printf_P(PSTR("Stok telah ditambahkan\n"));
 
         if (tempor->active.payload.jumlah_stock > 0 && tempor->active.payload.status_barang == HABIS){
             tempor->active.payload.status_barang = TERSEDIA;
         }
     } else if (pilihan == 2){
         if (tempangka > tempor->active.payload.jumlah_stock){
-            printf("Jumlah melebihi stok saat ini\n");
+            printf_P(PSTR("Jumlah melebihi stok saat ini\n"));
         } 
         else{
             tempor->active.payload.jumlah_stock -= (uint8_t)tempangka;
-            printf("Stok berhasil dikurangi\n");
+            printf_P(PSTR("Stok berhasil dikurangi\n"));
 
             if (tempor->active.payload.jumlah_stock == 0){
                 tempor->active.payload.status_barang = HABIS;
@@ -207,7 +207,7 @@ void update_stock(Memory_Pool_Inventaris *mp)
         }
     } 
     else{
-        printf("Pilihan update stok tidak valid\n");
+        printf_P(PSTR("Pilihan update stok tidak valid\n"));
     }
 }
 
@@ -219,7 +219,7 @@ void update_status(Memory_Pool_Inventaris *mp)
     Block* tempor;
 
     if (mp->activelist == NULL){
-        printf("Inventory Kosong\n");
+        printf_P(PSTR("Inventory Kosong\n"));
         return;
     }
     
@@ -227,11 +227,11 @@ void update_status(Memory_Pool_Inventaris *mp)
     tempor = cari_node(mp, tempid);
 
     if (tempor == NULL){
-        printf("Barang tidak ditemukan\n");
+        printf_P(PSTR("Barang tidak ditemukan\n"));
         return;
     }
     
-    printf("Pilih status baru (T=tersedia, D=dipinjam, R=rusak, H=habis) : ");
+    printf_P(PSTR("Pilih status baru (T=tersedia, D=dipinjam, R=rusak, H=habis) : "));
     scanf(" %c", &new_stats);
 
     normalisasi_status(&new_stats);
@@ -246,10 +246,10 @@ void update_status(Memory_Pool_Inventaris *mp)
         if (new_stats == 'H'){
             tempor->active.payload.jumlah_stock = 0;
         }
-        printf("Status berhasil diperbarui\n");
+        printf_P(PSTR("Status berhasil diperbarui\n"));
     }
     else{
-        printf("Status tidak valid\n");
+        printf_P(PSTR("Status tidak valid\n"));
     }
 }
 
@@ -259,7 +259,7 @@ void tampilkan_semua_data(Memory_Pool_Inventaris *mp)
     int i;
 
     if (mp->activelist == NULL){
-        printf("Inventory Kosong\n");
+        printf_P(PSTR("Inventory Kosong\n"));
         return;
     }
 
@@ -267,7 +267,7 @@ void tampilkan_semua_data(Memory_Pool_Inventaris *mp)
     i = 1;
 
     while (current != NULL){
-        printf("Item ke-%d\n", i);
+        printf_P(PSTR("Item ke-%d\n"), i);
         tampilkan_detail_barang(current);
         current = current->active.next_active;
         i++;
@@ -286,7 +286,7 @@ void tampilkan_ringkasan(Memory_Pool_Inventaris *mp)
     Block* current;
 
     if (mp->activelist == NULL){
-        printf("Data kosong\n");
+        printf_P(PSTR("Data kosong\n"));
         return;
     }
 
@@ -306,18 +306,18 @@ void tampilkan_ringkasan(Memory_Pool_Inventaris *mp)
 
     cek_memori(mp, &sisa_slot);
 
-    printf("\nRingkasan Inventaris\n");
-    printf("Total Jenis Barang : %d\n", total_jenis);
-    printf("Total Stok Barang  : %d\n", total_stok);
-    printf("Jumlah Tersedia    : %d\n", count_stat_tersedia);
-    printf("Jumlah Dipinjam    : %d\n", count_stat_dipinjam);
-    printf("Jumlah Rusak       : %d\n", count_stat_rusak);
-    printf("Jumlah Habis       : %d\n", count_stat_habis);
-    printf("Kapasitas Maksimum : %d item\n", MAX_ITEMS);
-    printf("Sisa Slot Memori   : %d item\n", sisa_slot);
+    printf_P(PSTR("\nRingkasan Inventaris\n"));
+    printf_P(PSTR("Total Jenis Barang : %d\n"), total_jenis);
+    printf_P(PSTR("Total Stok Barang  : %d\n"), total_stok);
+    printf_P(PSTR("Jumlah Tersedia    : %d\n"), count_stat_tersedia);
+    printf_P(PSTR("Jumlah Dipinjam    : %d\n"), count_stat_dipinjam);
+    printf_P(PSTR("Jumlah Rusak       : %d\n"), count_stat_rusak);
+    printf_P(PSTR("Jumlah Habis       : %d\n"), count_stat_habis);
+    printf_P(PSTR("Kapasitas Maksimum : %d item\n"), MAX_ITEMS);
+    printf_P(PSTR("Sisa Slot Memori   : %d item\n"), sisa_slot);
 
     if (sisa_slot <= MEMORY_WARNING_SLOT && sisa_slot > 0){
-        printf("Peringatan: memori hampir penuh\n");
+        printf_P(PSTR("Peringatan: memori hampir penuh\n"));
     }
 }
 
@@ -328,6 +328,9 @@ void mulai_program()
 
     pilihan = -1;
     in_it_pool(&mp);
+
+    // isi_data_dummy(&mp);
+    // printf_P(PSTR("50 Data dummy berhasil dimuat!\n"));
 
     while (pilihan != 0){
         menu_utama();
@@ -348,10 +351,55 @@ void mulai_program()
         } else if (pilihan == 7){
             tampilkan_ringkasan(&mp);
         } else if (pilihan == 0){
-            printf("Program selesai\n");
+            printf_P(PSTR("Program selesai\n"));
         } else{
-            printf("Pilihan tidak valid\n");
+            printf_P(PSTR("Pilihan tidak valid\n"));
         }
     }
     clear_list(&mp);
+}
+
+void cetak_kategori_teks(uint8_t kat) {
+    if (kat == KATEG_SENSOR) printf_P(PSTR("Sensor"));
+    else if (kat == KATEG_BOARD) printf_P(PSTR("Board"));
+    else if (kat == KATEG_MOTOR) printf_P(PSTR("Motor"));
+    else if (kat == KATEG_KABEL) printf_P(PSTR("Kabel"));
+}
+
+void cetak_lokasi_teks(uint8_t lok) {
+    if (lok == LOKASI_LAB_1) printf_P(PSTR("Lab 1"));
+    else if (lok == LOKASI_LAB_2) printf_P(PSTR("Lab 2"));
+    else if (lok == LOKASI_LAB_3) printf_P(PSTR("Lab 3"));
+    else if (lok == LOKASI_LAB_4) printf_P(PSTR("Lab 4"));
+}
+
+void isi_data_dummy(Memory_Pool_Inventaris *mp)
+{
+    Inventaris_Lab dummy;
+    int i;
+
+    for (i = 1; i <= 50; i++) {
+        dummy.id_barang = (uint16_t)i;
+        
+        // Nama otomatis: Brg-1, Brg-2, dst
+        sprintf(dummy.nama, "Brg-%d", i); 
+        
+        // Kategori: 0=SENSOR, 1=BOARD, 2=MOTOR, 3=KABEL
+        dummy.id_kategori = (uint8_t)(i % 4);
+        
+        // Lokasi: 0=LAB_1, 1=LAB_2, 2=LAB_3, 3=LAB_4
+        dummy.id_lokasi = (uint8_t)((i / 4) % 4); 
+        
+        // Stok: Acak antara 1 sampai 10
+        dummy.jumlah_stock = (uint8_t)(i % 10 + 1);
+        
+        // Status: Otomatis diset Tersedia
+        dummy.status_barang = TERSEDIA;
+        
+        // Pemilik dan PIC (Sesuaikan dengan kebutuhan)
+        strcpy(dummy.pemilik, "LUIS");
+        strcpy(dummy.pic, "LAB1");
+        
+        add_node(mp, dummy);
+    }
 }

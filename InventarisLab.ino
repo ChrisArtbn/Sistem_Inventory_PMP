@@ -1,5 +1,5 @@
 extern "C" {
-    #include "inventory_final.h"
+    #include "sistem_inventory.h"
 } 
 
 // Jembatan agar printf bisa tampil sempurna di Serial Monitor
@@ -39,7 +39,7 @@ void setup() {
     // MENGGUNAKAN F() AGAR TEKS DISIMPAN DI FLASH MEMORY
     Serial.println(F("\n\nSistem Booting Selesai. Memori Siap."));
     
-    mulaiProgram();
+    mulai_program();
 }
 
 void loop() {
