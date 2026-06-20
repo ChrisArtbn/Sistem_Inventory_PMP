@@ -64,7 +64,7 @@ void tambah_barang(Memory_Pool_Inventaris *mp)
     normalisasi_status(&temp.status);
     validasi_status(temp.status, &valid);
 
-    if (valid == 0) {
+    if (valid == 0){
         printf("Status tidak valid\n");
         return;
     }
@@ -180,7 +180,7 @@ void update_stock(Memory_Pool_Inventaris *mp)
         return;
     }
 
-    printf("Ketik 1 jika ingin menambah dan 2 jika ingin mengurangi: ");
+    printf("Ketik 1 jika ingin menambah dan 2 jika ingin mengurangi : ");
     scanf("%d", &pilihan);
 
     if (pilihan == 1){
@@ -316,4 +316,43 @@ void tampilkan_ringkasan(MemoryPoolInventaris *mp)
     if (sisa_slot <= MEMORY_WARNING_SLOT && sisa_slot > 0){
         printf("Peringatan: memori hampir penuh\n");
     }
+}
+
+void mulai_program(void)
+{
+    Memory_Pool_Inventaris mp;
+    int pilihan;
+
+    pilihan = -1;
+    in_it_pool(&mp);
+
+    while (pilihan != 0){
+        menu_utama();
+        baca_pilihan_menu(&pilihan);
+
+        if (pilihan == 1){
+            tambah_barang(&mp);
+        } else if (pilihan == 2){
+            hapus_barang(&mp);
+        } else if (pilihan == 3){
+            cari_barang_berdasarkan_ID(&mp);
+        } else if (pilihan == 4){
+            update_stock(&mp);
+        } else if (pilihan == 5){
+            update_status(&mp);
+        } else if (pilihan == 6){
+            tampilkan_semua_data(&mp);
+        } else if (pilihan == 7){
+            tampilkan_ringkasan(&mp);
+        } else if (pilihan == 8){
+            muat_file(&mp, "input.txt");
+        } else if (pilihan == 9){
+            simpan_ke_file(&mp, "output.txt");
+        } else if (pilihan == 0){
+            printf("Program selesai\n");
+        } else{
+            printf("Pilihan tidak valid\n");
+        }
+    }
+    clear_list(&mp);
 }
