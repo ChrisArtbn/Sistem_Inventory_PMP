@@ -2,6 +2,7 @@ extern "C" {
     #include "sistem_inventory.h"
 } 
 
+
 static int uart_putchar(char c, FILE *stream) {
     if (c == '\n') {
         Serial.println();
@@ -33,6 +34,7 @@ void setup() {
     stdout = &uartout;
     stdin = &uartout;
 
+    // MENGGUNAKAN F() AGAR TEKS DISIMPAN DI FLASH MEMORY
     Serial.println(F("\n\nSistem Booting Selesai. Memori Siap."));
     
     mulai_program();

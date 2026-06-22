@@ -32,7 +32,7 @@ void tambah_barang(Memory_Pool_Inventaris *mp)
     }
     baca_input_ID(&data.id_barang);
 
-    temp_barang = cari_node(mp, data.id_barang);
+    cari_node(mp, data.id_barang, &temp_barang);
 
     if (temp_barang != NULL){
         printf_P(PSTR("Barang ini duplikat, ID sudah ada di inventaris\n"));
@@ -50,11 +50,15 @@ void tambah_barang(Memory_Pool_Inventaris *mp)
     scanf("%d", &temp_kategori);
     data.id_kategori = (uint8_t)temp_kategori;
 
-    printf_P(PSTR("Masukkan Jumlah Stok : 0-255 "));
+    printf_P(PSTR("Masukkan Jumlah Stok (0-255) :  "));
     scanf("%d", &temp_stok);
 
     if (temp_stok < 0){
         printf_P(PSTR("Stok tidak boleh negatif\n"));
+        return;
+    }
+    if(temp_stok > 255){
+        printf_P(PSTR("Stok melebihi kapasitas maksimum\n"));
         return;
     }
     data.jumlah_stock = (uint8_t)temp_stok;
@@ -144,7 +148,7 @@ void cari_barang_berdasarkan_ID(Memory_Pool_Inventaris *mp)
     }
     
     baca_input_ID(&tempid);
-    tempor = cari_node(mp, tempid);
+    cari_node(mp, tempid, &tempor);
 
     if (tempor != NULL){
         printf_P(PSTR("Barang ditemukan\n"));
@@ -168,7 +172,7 @@ void update_stock(Memory_Pool_Inventaris *mp)
     }
 
     baca_input_ID(&tempid);
-    tempor = cari_node(mp, tempid);
+    cari_node(mp, tempid, &tempor);
 
     if (tempor == NULL){
         printf_P(PSTR("ID tidak ada dalam inventory\n"));
@@ -225,7 +229,7 @@ void update_status(Memory_Pool_Inventaris *mp)
     }
     
     baca_input_ID(&tempid);
-    tempor = cari_node(mp, tempid);
+    cari_node(mp, tempid, &tempor);
 
     if (tempor == NULL){
         printf_P(PSTR("Barang tidak ditemukan\n"));
@@ -330,9 +334,8 @@ void mulai_program()
     pilihan = -1;
     in_it_pool(&mp);
 
-    // untuk dummy data, bisa diaktifkan
-    // isi_data_dummy(&mp);
-    // printf_P(PSTR("50 Data dummy berhasil dimuat!\n"));
+    isi_data_dummy(&mp);
+    printf_P(PSTR("50 Data dummy berhasil dimuat!\n"));
 
     while (pilihan != 0){
         menu_utama();

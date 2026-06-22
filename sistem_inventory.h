@@ -57,12 +57,11 @@ typedef struct {
     Block pool[MAX_ITEMS];
 } Memory_Pool_Inventaris;
 
-// Prototype fungsi
 void mulai_program();
 void in_it_pool(Memory_Pool_Inventaris *mp);
 void cek_memori(Memory_Pool_Inventaris *mp, int *sisa_slot);
 void add_node(Memory_Pool_Inventaris *mp, Inventaris_Lab new_item);
-Block* cari_node(Memory_Pool_Inventaris *mp, uint16_t id);
+void cari_node(Memory_Pool_Inventaris *mp, uint16_t id, Block** tempnode);
 void delete_node(Memory_Pool_Inventaris *mp, uint16_t id, char* status_hapus);
 void clear_list(Memory_Pool_Inventaris *mp);
 void cetak_kategori_teks(uint8_t kat);

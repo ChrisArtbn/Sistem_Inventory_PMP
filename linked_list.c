@@ -52,17 +52,19 @@ void add_node(Memory_Pool_Inventaris *mp, Inventaris_Lab new_item)
     }
 }
 
-Block* cari_node(Memory_Pool_Inventaris *mp, uint16_t id)
+void cari_node(Memory_Pool_Inventaris *mp, uint16_t id, Block** tempnode)
 {
     Block* current = mp->activelist;
 
     while (current != NULL){
         if (current->active.payload.id_barang == id){
-            return current;
+            *tempnode = current;
+            return;
         }
         current = current->active.next_active;
     }
-    return NULL;
+    *tempnode = NULL;
+    return;
 }
 
 void delete_node(Memory_Pool_Inventaris *mp, uint16_t id, char* status_hapus)
